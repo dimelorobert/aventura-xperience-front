@@ -4,8 +4,7 @@ import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
-  {
+const routes = [{
     path: '/',
     name: 'Home',
     component: Home
@@ -13,12 +12,17 @@ Vue.use(VueRouter)
   {
     path: '/about',
     name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import( /* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
     path: '/aventuras',
     name: 'Aventuras',
-    component: () => import( /* webpackChunkName: "about" */ '../views/Aventuras.vue')
+    component: () => import( /* webpackChunkName: "about" */ '../views/AventurasView.vue')
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import( /* webpackChunkName: "about" */ '../views/LoginView.vue')
   }
 ]
 

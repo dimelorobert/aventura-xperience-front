@@ -24,7 +24,7 @@
         </p>
         <p>
           <i class="fas fa-map-marker-alt"></i>
-          {{adventure.country}} - {{adventure.city}}
+          {{adventure.city}} - {{adventure.country}}
         </p>
         <p>{{adventure.averageAdventure}}</p>
         <p class="price">
@@ -60,14 +60,9 @@ export default {
   },
   methods: {
     async getAdventures() {
-      let response;
       try {
-        response = await this.axios.get("/adventures/list");
+        const response = await this.axios.get("/adventures/list");
         this.adventures = response.data.data;
-        if (response.data.data.averageAdevnture === null) {
-          response.data.data.averageAdevnture = 0;
-        }
-        console.log(response.data.data);
       } catch (error) {
         console.log(error.response);
       }
@@ -91,6 +86,7 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-bottom: 4rem;
   background: #ffffff;
+  border-radius: .2rem;
 }
 .container-image-card {
   width: 100%;
@@ -105,6 +101,7 @@ export default {
   background-image: linear-gradient(19deg, #fe285a 0%, #ff7e9b 100%);
   height: 6rem;
   width: 5.5rem;
+  border-radius: .2rem;
 }
 .container-date .date {
   line-height: 2.2rem;
@@ -117,6 +114,8 @@ export default {
 }
 .container-image-card img {
   width: 100%;
+  border-top-right-radius: .2rem;
+  border-top-left-radius: .2rem;
 }
 .info-card {
   padding: 0 1.5rem;
