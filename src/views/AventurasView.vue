@@ -44,6 +44,7 @@
 <script>
 import { dateFilter } from "vue-date-fns";
 import locale from "date-fns/locale/es";
+import {mapState} from 'vuex';
 
 export default {
   data() {
@@ -51,6 +52,9 @@ export default {
       adventures: [],
       staticFolder: process.env.VUE_APP_STATIC,
     };
+  },
+  computed: {
+    ...mapState(['token'])
   },
   created() {
     this.getAdventures();
@@ -60,8 +64,13 @@ export default {
   },
   methods: {
     async getAdventures() {
+      let config = {
+        headers: {
+          authorization:this.token
+        }
+      }
       try {
-        const response = await this.axios.get("/adventures/list");
+        const response = await this.axios.get("/adventures/list", config);
         this.adventures = response.data.data;
       } catch (error) {
         console.log(error.response);
@@ -71,13 +80,13 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 
 .card {
   display: flex;
   flex-direction: column;
-  width: 23rem;
-  height: 39rem;
+  width: 17.5rem;
+  height: 35rem;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-bottom: 4rem;
   background: #ffffff;
@@ -94,18 +103,18 @@ export default {
   position: absolute;
   background-color: #fe285a;
   background-image: linear-gradient(19deg, #fe285a 0%, #ff7e9b 100%);
-  height: 6rem;
-  width: 5.5rem;
+  height: 5rem;
+  width: 4.5rem;
   border-radius: .2rem;
 }
 .container-date .date {
   line-height: 2.2rem;
   color: #ffffff;
   font-weight: 700;
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 .container-date :nth-child(2) {
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 .container-image-card img {
   width: 100%;

@@ -5,7 +5,7 @@
       <div class="user">
         <i class="fas fa-user"></i>
         <input
-          v-model="usuario.email"
+          v-model="userLogin.email"
           type="email"
           name="email"
           id="email"
@@ -18,7 +18,7 @@
       <div class="password">
         <i class="fas fa-lock"></i>
         <input
-          v-model="usuario.password"
+          v-model="userLogin.password"
           @keyup.enter="login"
           type="password"
           name="password"
@@ -29,14 +29,23 @@
         />
       </div>
       <div class="container-checkbox">
-        <input type="checkbox" name="keeplogin" id="keeplogin" />
+        <input
+          v-model="keepLogin"
+          type="checkbox"
+          :value="keepLogin"
+          name="keeplogin"
+          id="keeplogin"
+        />
         <label for="keeplogin">Mantener la sesión iniciada</label>
       </div>
 
       <p>
         <a href="#" target="_blank" rel="noopener noreferrer">¿Olvidaste tu contraseña?</a>
+      </p>
+      <p>
         <a href="#" target="_blank" rel="noopener noreferrer">¿Aún no estas registrado?</a>
       </p>
+
       <div class="container-btn">
         <button class="btn-dark">Log in</button>
       </div>
@@ -48,30 +57,38 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "Login",
   data() {
     return {
-      usuario: {
+      userLogin: {
         email: null,
         password: null,
       },
+      keepLogin: true,
       message: null,
     };
   },
   methods: {
+    ...mapActions(["saveUser"]),
     async login() {
-      let response;
       try {
-        response = await this.axios.post("/users/login", this.usuario);
-        //console.log(response.data);
+        const response = await this.axios.post("/users/login", this.userLogin);
+        const token = response.data.data.token;
+        this.saveUser(token);
+        if (response.status === 200) {
+          this.message = response.data.message;
+        }
+
+        console.log(response.data);
       } catch (error) {
         let errorMessage = error.response.data.error;
         if (!errorMessage) {
-					this.message = error.response.data.message;
-        }else {
-					this.message = errorMessage;
-				}
+          this.message = error.response.data.message;
+        } else {
+          this.message = errorMessage;
+        }
       }
     },
   },
@@ -87,12 +104,7 @@ input {
 ::placeholder {
   color: #ffffff;
 }
-form {
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+
 .fa-user,
 .fa-lock {
   color: #ffffff;

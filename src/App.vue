@@ -1,12 +1,26 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">Home</router-link>|
+      <router-link v-if="isActive" to="/aventuras">Aventuras</router-link>|
+      <router-link to="/about">About</router-link>|
+      <router-link v-if="!isActive" to="/login">Login</router-link>|
+      <a @click="logout()" v-if="isActive">Logout</a>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
+<script>
+import { mapActions, mapGetters } from "vuex";
+export default {
+  methods: {
+    ...mapActions(["logout"]),
+  },
+  computed: {
+    ...mapGetters(["isActive"]),
+  },
+};
+</script>
 
 <style>
 * {
@@ -35,6 +49,17 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+form {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+input {
+  border: none;
+  color: #ffffff;
+  outline: none;
+}
 button {
   display: flex;
   justify-content: center;
@@ -47,6 +72,5 @@ button {
   width: 6rem;
   height: 2.5rem;
   cursor: pointer;
-  
 }
 </style>
