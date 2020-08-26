@@ -9,6 +9,12 @@
 </template>
 
 <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  line-height: 2.2rem;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -28,5 +34,19 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  border: 1px solid #fe285a;
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  width: 6rem;
+  height: 2.5rem;
+  cursor: pointer;
+  
 }
 </style>

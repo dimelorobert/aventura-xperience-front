@@ -71,13 +71,8 @@ export default {
 };
 </script>
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  line-height: 2.2rem;
-}
+<style scoped>
+
 .card {
   display: flex;
   flex-direction: column;
@@ -141,16 +136,7 @@ hr {
   font-size: 1rem;
   font-weight: 300;
 }
-button {
-  outline: none;
-  border: 1px solid #fe285a;
-  margin: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.25rem;
-  width: 5.5rem;
-  height: 3rem;
-  cursor: pointer;
-}
+
 .btn-light {
   color: #000000;
   background-color: transparent;
