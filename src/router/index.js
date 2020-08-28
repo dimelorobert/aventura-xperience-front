@@ -18,15 +18,26 @@ const routes = [{
   {
     path: '/aventuras',
     name: 'Aventuras',
-    component: () => import( /* webpackChunkName: "about" */ '../views/AventurasView.vue'),
-    meta: {
+    component: () => import( /* webpackChunkName: "about" */ '../components/adventures/Adventures.vue'),
+    /*meta: {
       requireAuth: true
-    }
+    }*/
   },
+   {
+     path: '/registro',
+     name: 'Registro',
+     component: () => import( /* webpackChunkName: "about" */ '../views/Registro.vue'),
+    
+   },
   {
     path: '/login',
     name: 'Login',
     component: () => import( /* webpackChunkName: "about" */ '../views/LoginView.vue')
+  },
+  {
+    path: '*',
+    name: 'ErrorView',
+    component: () => import( /* webpackChunkName: "about" */ '../views/ErrorView.vue')
   }
 ]
 

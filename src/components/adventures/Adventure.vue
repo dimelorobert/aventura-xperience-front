@@ -1,6 +1,6 @@
 <template>
   <div class="aventuras-container">
-    <article v-for="(adventure, index) in adventures" :key="index" class="card">
+    <article class="card">
       <div class="container-image-card">
         <div class="container-date">
           <p class="date">{{new Date(adventure.start_date_event) | date("dd") }}</p>
@@ -14,8 +14,8 @@
         <h3>{{adventure.name}}</h3>
         <hr />
         <p>
-          <i class="fas fa-circle"></i>
-          {{adventure.isAvailable}}
+          <i class="fas fa-circle"></i> 
+          <strong>{{adventure.isAvailable}}</strong>
         </p>
         <p>{{adventure.description}}</p>
         <p>
@@ -35,7 +35,7 @@
 
       <div class="container-btn">
         <button class="btn-light">Reservar</button>
-        <button class="btn-dark">Comprar</button>
+        <button @click="addAdventure" class="btn-dark">Comprar</button>
       </div>
     </article>
   </div>
@@ -44,53 +44,44 @@
 <script>
 import { dateFilter } from "vue-date-fns";
 import locale from "date-fns/locale/es";
-import {mapState} from 'vuex';
-
 export default {
+  name: "Adventure",
+  props: {
+    adventure: Object,
+    index: Number,
+  },
   data() {
     return {
-      adventures: [],
       staticFolder: process.env.VUE_APP_STATIC,
     };
   },
-  computed: {
-    ...mapState(['token'])
-  },
-  created() {
-    this.getAdventures();
-  },
-  filters: {
-    date: dateFilter,
-  },
   methods: {
-    async getAdventures() {
-      let config = {
-        headers: {
-          authorization:this.token
-        }
-      }
-      try {
-        const response = await this.axios.get("/adventures/list", config);
-        this.adventures = response.data.data;
-      } catch (error) {
-        console.log(error.response);
-      }
+    // cuando se pasan valores/datos a eventos emitidops en el componente mejor en objeto
+    addAdventure() {
+      this.$emit("vacancy", {
+        index: this.index,
+      });
     },
   },
 };
 </script>
 
 <style>
+.aventuras-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 .card {
   display: flex;
   flex-direction: column;
-  width: 17.5rem;
-  height: 35rem;
+  width: 20rem;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-bottom: 4rem;
   background: #ffffff;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
 }
 .container-image-card {
   width: 100%;
@@ -105,10 +96,10 @@ export default {
   background-image: linear-gradient(19deg, #fe285a 0%, #ff7e9b 100%);
   height: 5rem;
   width: 4.5rem;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
 }
 .container-date .date {
-  line-height: 2.2rem;
+  line-height: 2rem;
   color: #ffffff;
   font-weight: 700;
   font-size: 2.5rem;
@@ -118,8 +109,8 @@ export default {
 }
 .container-image-card img {
   width: 100%;
-  border-top-right-radius: .2rem;
-  border-top-left-radius: .2rem;
+  border-top-right-radius: 0.2rem;
+  border-top-left-radius: 0.2rem;
 }
 .info-card {
   padding: 0 1.5rem;
@@ -136,6 +127,7 @@ hr {
 }
 .info-card .fa-circle {
   color: green;
+  margin-right: .5rem;
 }
 .info-card .price {
   font-size: 2rem;
@@ -144,6 +136,11 @@ hr {
 .info-card .price span {
   font-size: 1rem;
   font-weight: 300;
+}
+.container-btn {
+  display:  inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn-light {

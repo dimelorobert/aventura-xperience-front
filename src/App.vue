@@ -1,10 +1,14 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link>|
+      <figure>
+        <img src="./assets/img/logo-ax.png" class="animate__animated animate__flipInX" />
+      </figure>
+      <router-link to="/">Home</router-link>
       <router-link v-if="isActive" to="/aventuras">Aventuras</router-link>|
       <router-link to="/about">About</router-link>|
-      <router-link v-if="!isActive" to="/login">Login</router-link>|
+      <router-link to="/registro">Registro</router-link>|
+      <router-link v-if="!isActive" to="/login">Login</router-link>
       <a @click="logout()" v-if="isActive">Logout</a>
     </div>
     <router-view />
@@ -13,11 +17,15 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
+  name: "App",
   methods: {
-    ...mapActions(["logout"]),
+    ...mapActions("users", ["logout", "readToken"]),
   },
   computed: {
-    ...mapGetters(["isActive"]),
+    ...mapGetters("users", ["isActive"]),
+  },
+  created() {
+    this.readToken();
   },
 };
 </script>
@@ -47,18 +55,35 @@ export default {
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #fe285a;
+}
+#nav figure {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#nav figure img {
+  width: 18.75rem;
 }
 form {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+label {
+  color: #ffffff;
+  height: min-content;
+}
+label[for~="checkbox"],
+label[for~="accept"] {
+  color: #2c3e50;
 }
 input {
   border: none;
   color: #ffffff;
   outline: none;
+  background: #fe285a;
 }
 button {
   display: flex;
