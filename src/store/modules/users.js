@@ -1,19 +1,31 @@
 // decodificar token
 import decode from 'jwt-decode';
 import router from '@/router'
+import axios from 'axios'
 
 export default {
    namespaced: true,
 
    state: {
+      // Registro
+      dataFromBody: null,
+
+      // Login
       token: '',
       userDB: '',
+
    },
    mutations: {
+
+      // Registro 
+
+      setDataFromBody(state, payload) {
+         state.dataFromBody = payload;
+      },
+
+      // Login
       getUser(state, payload) {
-
          state.token = payload;
-
          if (payload === '') {
             state.userDB === '';
          } else {
@@ -25,6 +37,37 @@ export default {
       }
    },
    actions: {
+      // Registro
+
+      async createUser({
+            commit
+         },
+         dataFromBody
+      ) {
+         try {
+            const response = await axios.post(`users/create`, dataFromBody.user);
+            console.log(response);
+            if (response.status === 200) {
+               router.push({
+                  name: 'Login'
+               });
+            }
+         } catch (error) {
+            let errorMessage = error.response.data.error;
+            //console.log("Error1:", errorMessage);
+            if (!errorMessage) {
+               dataFromBody.message = error.response.data.message;
+               // console.log("errro2:", error.response.data.message);
+            } else {
+               dataFromBody.message = errorMessage;
+               //console.log("error3", error.response);
+            }
+         }
+
+      },
+
+
+      // Login
       saveUser({
          commit
       }, payload) {
@@ -40,15 +83,19 @@ export default {
             name: 'Home'
          });
       },
-      readToken({commit}) {
+      readToken({
+         commit
+      }) {
          const token = localStorage.getItem('token');
-         if(token) {
-            commit('getUser',token);
-         } else  {
+
+
+         if (token) {
+            commit('getUser', token);
+         } else {
             commit('getUser', '');
          }
       }
-      
+
    },
    getters: {
       isActive: state => !!state.token

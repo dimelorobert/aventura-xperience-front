@@ -1,52 +1,168 @@
 <template>
   <div class="registro-container">
     <h1>Nuevo usuario</h1>
-    <form>
+
+    <form @submit.prevent="createUser(dataFromBody)" class="animate__animated animate__fadeInUp">
       <div class="input-container">
         <label for="name">Nombre</label>
-        <input type="text" name="name" id="name" autocomplete="on" />
+        <input v-model="dataFromBody.user.name" type="text" name="name" id="name" autocomplete="on" />
       </div>
 
       <div class="input-container">
         <label for="surname">Apellidos</label>
-        <input type="text" surname="surname" id="surname" autocomplete="on" />
+        <input
+          v-model="dataFromBody.user.surname"
+          type="text"
+          surname="surname"
+          name="surname"
+          class="input-style"
+          id="surname"
+          autocomplete="on"
+        />
       </div>
 
-      <div class="input-container">
-        <label for="country">País</label>
-        <select name="country" id="country"></select>
-        <label for="city">Ciudad</label>
-        <select name="city" id="city"></select>
-      </div>
 
       <div class="input-container">
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" autocomplete="on" />
+        <input
+          v-model="dataFromBody.user.email"
+          type="email"
+          name="email"
+          class="input-style"
+          id="email"
+          autocomplete="on"
+        />
       </div>
 
       <div class="input-container">
         <label for="password">Password</label>
-        <input type="password" name="password" id="password" autocomplete="on" />
-      </div>
-
-      <div class="input-container">
-        <input type="file" name="image" id="image" />
+        <input
+          v-model="dataFromBody.user.password"
+          type="password"
+          name="password"
+          class="input-style"
+          id="password"
+          autocomplete="on"
+        />
       </div>
 
       <div class="accept">
-        <input type="checkbox" name="accept" id="accept" requerid />
-        <label for="accept">Acepto terminos y condiciones</label>
+        <label for="accept"></label>
+        Acepto terminos y condiciones
+        <input
+          type="checkbox"
+          name="accept"
+          id="accept"
+          requerid
+        />
       </div>
       <div class="container-btn">
         <button class="btn-dark">Registrame</button>
       </div>
     </form>
+
+    <div
+      v-if="dataFromBody.message != ''"
+      class="error animate__animated animate__tada"
+    >{{ dataFromBody.message }}</div>
+
+    <!-- <div
+      v-
+      :style="success"
+      class="error animate__animated animate__tada"
+    >{{ dataFromBody.message }}</div>-->
   </div>
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+
+export default {
+  name: "Registro",
+  components: {
+
+  },
+  data() {
+    return {
+      dataFromBody: {
+        user: {
+          name: "",
+          surname: "",
+          email: "",
+          password: "",
+        },
+        message: "",
+        error: "",
+      },
+      success: {
+        backgroundColor: "green",
+      },
+    };
+  },
+  methods: {
+    ...mapActions("users", ["createUser"]),
+  },
+};
 </script>
 
-<style>
+<style scoped>
+.registro-container {
+  background: url("../assets/img/parachutes.png"),
+    url("../assets/img/mountainman.png");
+  background-position: 55rem -9rem, -8rem 15rem;
+  background-size: auto contain;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+::placeholder {
+  color: #ffffff;
+}
+p {
+  font-size: 0.9rem;
+}
+.input-container {
+  display: inline-flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #fe285a;
+  border-radius: 0.3rem;
+  margin: 1rem 0;
+  width: 18rem;
+  height: 2.5rem;
+  padding: 1.5rem;
+}
+.input-style {
+  background-color: #fe285a;
+  height: max-content;
+}
+
+.container-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-dark {
+  color: #ffffff;
+  background-color: #fe285a;
+}
+.btn-dark:hover {
+  color: #000000;
+  background-color: transparent;
+}
+#image {
+  width: 16rem;
+}
+.error {
+  position: absolute;
+  top: 0;
+  margin: 2rem auto;
+  color: #ffffff;
+  background-color: red;
+  opacity: 75%;
+  border-radius: 0.25rem;
+  width: 18.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
 </style>

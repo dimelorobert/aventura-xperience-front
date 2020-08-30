@@ -3,11 +3,25 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+// Snotify
+import Snotify, {
+  SnotifyPosition
+} from 'vue-snotify'
+
+const options = {
+  toast: {
+    position: SnotifyPosition.rightTop
+  }
+}
+
+Vue.use(Snotify, options)
+
+
 // Axios
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
-Vue.use(VueAxios, axios)
+
 axios.defaults.baseURL = `http://localhost:3000/`
 
 // Dotenv
@@ -27,8 +41,8 @@ Vue.filter("date", createDateFilter("dd 'de' MMM 'de' yyyy", {
 // vuelidate validaciones formularios
 
 import Vuelidate from 'vuelidate'
-Vue.use(Vuelidate)
 
+Vue.use(VueAxios, axios, Vuelidate);
 
 Vue.config.productionTip = false
 

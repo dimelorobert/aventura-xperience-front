@@ -5,7 +5,7 @@
     <form @submit.prevent="login" class="animate__animated animate__fadeInLeft">
       <!-- CORREO ELECTRONICO -->
       <div class="input-container">
-        <i class="fas fa-user"></i>
+        <i class="fas fa-user" />
         <input
           v-model="userFromBody.email"
           type="email"
@@ -19,7 +19,7 @@
 
       <!-- PASSWORD -->
       <div class="input-container">
-        <i class="fas fa-lock"></i>
+        <i class="fas fa-lock" />
         <input
           v-model="userFromBody.password"
           @keyup.enter="login"
@@ -36,7 +36,7 @@
       <div class="container-checkbox">
         <label for="checkbox">
           Mantener la sesión iniciada
-          <input type="checkbox" value="1" name="checkbox" id="checkbox" />
+          <input type="checkbox" name="checkbox" id="checkbox" />
         </label>
       </div>
 
@@ -66,13 +66,15 @@
       <!-- VENTANA SHOW -->
       <div class="modal" v-if="showModal">
         <p class="close" @click="showModal = false">
-          <i class="far fa-times-circle"></i>
+          <i class="far fa-times-circle" />
         </p>
-        <div @submit="recoveryPassword" class="recovery-password">
-          <h3>Introduce tu email</h3>
-          <span class="recovery-text">de usuario para recuperar tu contraseña</span>
+        <form @submit.prevent="recoveryPassword" class="recovery-password">
+          <h3>
+            <i class="far fa-paper-plane" /> Introduce tu email
+          </h3>
+          <span class="recovery-text">para recuperar tu contraseña</span>
           <div class="email-recovery-container">
-            <i class="fas fa-envelope"></i>
+            <i class="fas fa-envelope" />
             <input
               v-model="recoveryMail"
               type="email"
@@ -83,21 +85,25 @@
             />
           </div>
           <div class="container-btn">
-            <button @click="recoveryPassword" class="btn-dark">Enviar</button>
+            <button class="btn-dark">Enviar</button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 
-    <div v-if="message != ''" class="error animate__animated animate__tada">{{ message }}</div>
+    <!-- <div v-if="message != ''" class="error animate__animated animate__tada">{{ message }}</div> -->
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import Snotify from "vue-snotify";
 
 export default {
   name: "Login",
+  components: {
+    Snotify,
+  },
   data() {
     return {
       userFromBody: {
@@ -126,31 +132,63 @@ export default {
         console.log(response.data);
       } catch (error) {
         let errorMessage = error.response.data.error;
+        let errorSnotify;
+
+        let codeError = error.response.data.code;
+        if (codeError === null || codeError === undefined) {
+          codeError = "campo requerido";
+        }
+
         //console.log("Error1:", errorMessage);
         if (!errorMessage) {
-          this.message = error.response.data.message;
+          //this.message = error.response.data.message;
+          errorSnotify = error.response.data.message;
           // console.log("errro2:", error.response.data.message);
         } else {
-          this.message = errorMessage;
+          //this.message = errorMessage;
+          errorSnotify = error.response.data.error;
           //console.log("error3", error.response);
         }
+
+        this.$snotify.async(
+          "Por favor, espere...",
+          "Comprobación de datos",
+          () =>
+            new Promise((resolve, reject) => {
+              setTimeout(
+                () =>
+                  reject({
+                    title: `Error: ${codeError}`,
+                    body: `${errorSnotify}`,
+                    config: {
+                      closeOnClick: true,
+                    },
+                  }),
+                1000
+              );
+            })
+        );
       }
     },
 
     // RECUPERAR CONTRASEÑA OLVIDADA
     async recoveryPassword() {
       try {
-        response = await this.axios.post(`/users/recovery/password`, {
+        const response = await this.axios.post(`users/recovery/password`, {
           email: this.recoveryMail,
         });
+        if (response.status === 200) {
+          this.showModal = false;
+        }
       } catch (error) {
-        let errorMessage = await error.response.data.error;
+        let errorMessage;
+        //errorMessage = error.response.data.error;
         //console.log("Error1:", errorMessage);
         if (!errorMessage) {
-          this.message = await error.response.data.message;
+          //this.message = error.response.data.message;
           // console.log("errro2:", error.response.data.message);
         } else {
-          this.message = errorMessage;
+          //this.message = errorMessage;
           //console.log("error3", error.response);
         }
       }
@@ -159,7 +197,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.login-container {
+  height: 100vh;
+}
 ::placeholder {
   color: #ffffff;
 }
@@ -274,5 +315,7 @@ a {
   opacity: 75%;
   border-radius: 0.25rem;
   width: 18.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
 }
 </style>

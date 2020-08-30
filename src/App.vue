@@ -4,20 +4,24 @@
       <figure>
         <img src="./assets/img/logo-ax.png" class="animate__animated animate__flipInX" />
       </figure>
-      <router-link to="/">Home</router-link>
-      <router-link v-if="isActive" to="/aventuras">Aventuras</router-link>|
-      <router-link to="/about">About</router-link>|
-      <router-link to="/registro">Registro</router-link>|
+      <router-link to="/">Home</router-link> |
+      <router-link v-if="isActive" to="/aventuras">Aventuras</router-link> |
+      <router-link to="/about">About</router-link> |
+      <router-link v-if="!isActive" to="/registro">Registro</router-link> |
       <router-link v-if="!isActive" to="/login">Login</router-link>
       <a @click="logout()" v-if="isActive">Logout</a>
     </div>
+    <vue-snotify></vue-snotify>
     <router-view />
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+import Snotify from "vue-snotify";
+
 export default {
   name: "App",
+  components: { Snotify },
   methods: {
     ...mapActions("users", ["logout", "readToken"]),
   },
@@ -31,6 +35,7 @@ export default {
 </script>
 
 <style>
+@import "~vue-snotify/styles/material.css";
 * {
   margin: 0;
   padding: 0;

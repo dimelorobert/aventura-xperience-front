@@ -20,6 +20,7 @@
       "vue-headful": "^2.1.0",
       "vue-notifications": "^1.0.2",
       "vue-router": "^3.4.3",
+      "vue-snotify": "^3.2.1",
       "vue-spinner": "^1.0.4",
       "vuelidate": "^0.7.5",
       "vuex": "^3.5.1"
