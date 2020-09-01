@@ -14,7 +14,7 @@
         <h3>{{adventure.name}}</h3>
         <hr />
         <p>
-          <i class="fas fa-circle"></i>
+          <i class="fas fa-circle"></i> 
           <strong>{{adventure.isAvailable}}</strong>
         </p>
         <p>{{adventure.description}}</p>
@@ -44,8 +44,6 @@
 <script>
 import { dateFilter } from "vue-date-fns";
 import locale from "date-fns/locale/es";
-import { mapState, mapActions } from "vuex";
-
 export default {
   name: "Adventure",
   props: {
@@ -57,14 +55,7 @@ export default {
       staticFolder: process.env.VUE_APP_STATIC,
     };
   },
-  computed: {
-    ...mapState("users", ["token", "adventures"]),
-  },
-  created() {
-    this.getAdventures();
-  },
   methods: {
-    ...mapActions("users", ['getAdventures']),
     // cuando se pasan valores/datos a eventos emitidops en el componente mejor en objeto
     addAdventure() {
       this.$emit("vacancy", {

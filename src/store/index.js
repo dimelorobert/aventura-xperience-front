@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import users from './modules/users'
+import usersMod from './modules/usersMod'
+import adventuresMod from './modules/adventuresMod'
 
 
 
@@ -20,6 +21,6 @@ export default new Vuex.Store({
     
   },
   modules: {
-    users
+    usersMod, adventuresMod
   }
 })

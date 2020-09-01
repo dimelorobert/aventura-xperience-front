@@ -51,6 +51,7 @@
         <label for="accept"></label>
         Acepto terminos y condiciones
         <input
+        v-model="checked"
           type="checkbox"
           name="accept"
           id="accept"
@@ -85,6 +86,7 @@ export default {
   },
   data() {
     return {
+      checked: false,
       dataFromBody: {
         user: {
           name: "",
@@ -101,7 +103,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("users", ["createUser"]),
+    ...mapActions("usersMod", ["createUser"]),
   },
 };
 </script>
@@ -113,7 +115,6 @@ export default {
   background-position: 55rem -9rem, -8rem 15rem;
   background-size: auto contain;
   background-repeat: no-repeat;
-  height: 100vh;
 }
 ::placeholder {
   color: #ffffff;

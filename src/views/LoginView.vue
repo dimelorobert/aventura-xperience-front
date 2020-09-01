@@ -37,7 +37,7 @@
       <div class="container-checkbox">
         <label for="checkbox">
           Mantener la sesión iniciada
-          <input type="checkbox" name="checkbox" id="checkbox"  checked />
+          <input type="checkbox" name="checkbox" id="checkbox" checked />
         </label>
       </div>
 
@@ -118,11 +118,12 @@ export default {
   },
 
   methods: {
-    ...mapActions("users", ["saveUser"]),
+    ...mapActions("usersMod", ["saveUser"]),
 
     // INICIAR SESIÓN
     async login() {
       try {
+        
         const response = await this.axios.post(
           `users/login`,
           this.userFromBody
@@ -130,7 +131,29 @@ export default {
         const token = response.data.data.token;
         this.saveUser(token);
 
-        console.log(response.data);
+        console.log(response.data.message);
+        if(response.status === 200) {
+          this.$snotify.async(
+          "Cargando datos...",
+          "Por favor, espere...",
+          () =>
+            new Promise((resolve, reject) => {
+              setTimeout(
+                () =>
+                  resolve({
+                    title: "Hola!😊✌",
+                    body: `${response.data.message}`,
+                    config: {
+                      closeOnClick: true,
+                    },
+                  }),
+                100
+              );
+            })
+        );
+        }
+
+        
       } catch (error) {
         let errorMessage = error.response.data.error;
         let errorSnotify;

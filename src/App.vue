@@ -26,10 +26,10 @@ export default {
   name: "App",
   components: { Snotify },
   methods: {
-    ...mapActions("users", ["logout", "readToken"]),
+    ...mapActions("usersMod", ["logout", "readToken"]),
   },
   computed: {
-    ...mapGetters("users", ["isActive"]),
+    ...mapGetters("usersMod", ["isActive"]),
   },
   created() {
     this.readToken();

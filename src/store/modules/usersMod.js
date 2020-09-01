@@ -14,7 +14,7 @@ export default {
       token: '',
       userDB: '',
       userList: [],
-      adventures: [],
+      adventureArray: [],
       shoppings: [],
       invoices: [],
    },
@@ -42,15 +42,16 @@ export default {
 
       // RELLENADOR DE ARRAYS
       refillArrays(state, payload) {
-         if (state.userList) {
+         /*if (state.userList) {
             state.userList = payload;
-         } else if (state.adventures) {
-            state.adventures = payload;
+         } else if (state.adventureArray) {
+            state.adventureArray = payload;
          } else if (state.shoppings) {
             state.shoppings = payload;
          } else {
             state.invoices = payload;
-         }
+         }*/
+         state.adventureArray = payload;
       },
 
    },

@@ -29,16 +29,15 @@ import VueCountdown from "@chenfengyuan/vue-countdown";
 
 export default {
   name: "Activation",
-  data() {
-    return {};
-  },
   computed: {
     //MAPSTATE AQUI
-    ...mapState("users", ["userList", "adventures"]),
+    ...mapState("usersMod", ["userList"]),
+    ...mapState("AdventuresMod", ["adventures"]),
   },
   methods: {
     //MAPACTION AQUI
-    ...mapActions("users", ["getUsers", "getAdventures"]),
+    ...mapActions("usersMod", ["getUsers"]),
+    ...mapActions("adventuresMod", ["getAdventures"]),
 
     pushToLogin() {
       setTimeout(() => {

@@ -23,27 +23,31 @@ const routes = [{
       requireAuth: true
     }
   },
-   {
-     path: '/create-account',
-     name: 'Registro',
-     component: () => import( /* webpackChunkName: "about" */ '../views/Registro.vue'),
-    
-   },
+  {
+    path: '/create-account',
+    name: 'Registro',
+    component: () => import( /* webpackChunkName: "about" */ '../views/Registro.vue'),
+
+  },
   {
     path: '/login',
     name: 'Login',
     component: () => import( /* webpackChunkName: "about" */ '../views/LoginView.vue')
   },
-   {
-     path: '/user-dashboard',
-     name: 'Dashboard',
-     component: () => import( /* webpackChunkName: "about" */ '../views/UserDashboard.vue')
-   },
-   {
-     path: '/activation-account',
-     name: 'Activation',
-     component: () => import( /* webpackChunkName: "about" */ '../views/ActivationAccount.vue')
-   },
+  {
+    path: '/user-dashboard',
+    name: 'Dashboard',
+    component: () => import( /* webpackChunkName: "about" */ '../views/UserDashboard.vue')
+  }, {
+    path: '/edit-user/:id',
+    name: 'EditUser',
+    component: () => import( /* webpackChunkName: "about" */ '../views/UserDashboard.vue')
+  },
+  {
+    path: '/activation-account',
+    name: 'Activation',
+    component: () => import( /* webpackChunkName: "about" */ '../views/ActivationAccount.vue')
+  },
   {
     path: '*',
     name: 'ErrorView',
@@ -58,11 +62,13 @@ router.beforeEach((to, from, next) => {
   const protectedRoute = to.matched.some(record => record.meta.requireAuth);
 
   if (protectedRoute && store.state.token === null) {
-    next({name:'Login'});
+    next({
+      name: 'Login'
+    });
   } else {
     next();
   }
-  
+
 
 })
 
