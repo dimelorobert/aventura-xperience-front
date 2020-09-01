@@ -4,13 +4,15 @@
       <figure>
         <img src="./assets/img/logo-ax.png" class="animate__animated animate__flipInX" />
       </figure>
-      <router-link to="/">Home</router-link> |
-      <router-link v-if="isActive" to="/aventuras">Aventuras</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link v-if="!isActive" to="/registro">Registro</router-link> |
-      <router-link v-if="!isActive" to="/login">Login</router-link>
-      <a @click="logout()" v-if="isActive">Logout</a>
+      <router-link to="/">Home |</router-link>
+      <router-link v-if="isActive" :to="{name:'Aventuras'}">Aventuras |</router-link>
+      <router-link v-if="isActive" :to="{name:'Dashboard'}">Perfil |</router-link> 
+      <router-link :to="{name:'About'}">About</router-link> |
+      <router-link v-if="!isActive" :to="{name:'Registro'}">Registro |</router-link>
+      <router-link v-if="!isActive" :to="{name:'Login'}">Login |</router-link>
+      <a @click="logout()" v-if="isActive">Logout |</a>
     </div>
+    
     <vue-snotify></vue-snotify>
     <router-view />
   </div>
@@ -18,6 +20,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import Snotify from "vue-snotify";
+import {VueTabs, VTab} from 'vue-nav-tabs'
 
 export default {
   name: "App",
@@ -85,22 +88,19 @@ label[for~="accept"] {
   color: #2c3e50;
 }
 input {
+  padding-left: 1rem;
   border: none;
   color: #ffffff;
   outline: none;
   background: #fe285a;
+  width: 100%;
 }
 button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   outline: none;
   border: 1px solid #fe285a;
-  margin: 1rem;
-  padding: 0.5rem 1rem;
+  margin: 1rem auto;
+  padding: 0 1.5rem;
   border-radius: 0.25rem;
-  width: 6rem;
-  height: 2.5rem;
   cursor: pointer;
 }
 </style>

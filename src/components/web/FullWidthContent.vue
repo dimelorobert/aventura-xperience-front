@@ -12,9 +12,7 @@ export default {
 </script>
 
 <style scoped>
-.full-content {
-  
-}
+
 .full-content img {
   max-width: 100%;
   min-height: inherit;

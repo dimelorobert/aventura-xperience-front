@@ -1,5 +1,6 @@
 <template>
   <div class="registro-container">
+    <vue-headful title="Registro || Aventura-Xperience" description="Tu aventura empieza aquí" />
     <h1>Nuevo usuario</h1>
 
     <form @submit.prevent="createUser(dataFromBody)" class="animate__animated animate__fadeInUp">

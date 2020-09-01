@@ -16,15 +16,15 @@ const routes = [{
     component: () => import( /* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
-    path: '/aventuras',
+    path: '/adventures',
     name: 'Aventuras',
     component: () => import( /* webpackChunkName: "about" */ '../components/adventures/Adventures.vue'),
-    /*meta: {
+    meta: {
       requireAuth: true
-    }*/
+    }
   },
    {
-     path: '/registro',
+     path: '/create-account',
      name: 'Registro',
      component: () => import( /* webpackChunkName: "about" */ '../views/Registro.vue'),
     
@@ -34,6 +34,16 @@ const routes = [{
     name: 'Login',
     component: () => import( /* webpackChunkName: "about" */ '../views/LoginView.vue')
   },
+   {
+     path: '/user-dashboard',
+     name: 'Dashboard',
+     component: () => import( /* webpackChunkName: "about" */ '../views/UserDashboard.vue')
+   },
+   {
+     path: '/activation-account',
+     name: 'Activation',
+     component: () => import( /* webpackChunkName: "about" */ '../views/ActivationAccount.vue')
+   },
   {
     path: '*',
     name: 'ErrorView',

@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <vue-headful title="Login || Aventura-Xperience" description="Tu aventura empieza aquí" />
     <h1>Login</h1>
 
     <form @submit.prevent="login" class="animate__animated animate__fadeInLeft">
@@ -36,7 +37,7 @@
       <div class="container-checkbox">
         <label for="checkbox">
           Mantener la sesión iniciada
-          <input type="checkbox" name="checkbox" id="checkbox" />
+          <input type="checkbox" name="checkbox" id="checkbox"  checked />
         </label>
       </div>
 

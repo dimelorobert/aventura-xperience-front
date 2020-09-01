@@ -4,48 +4,67 @@ import router from '@/router'
 import axios from 'axios'
 
 export default {
+
+   // VARIABLE QUE SE ACTIVA EN TRUE PARA USAR MODULOS
    namespaced: true,
 
+   // variables a usar
    state: {
-      // Registro
-      dataFromBody: null,
-
-      // Login
+      user_id: '',
       token: '',
       userDB: '',
-
+      userList: [],
+      adventures: [],
+      shoppings: [],
+      invoices: [],
    },
    mutations: {
 
-      // Registro 
-
-      setDataFromBody(state, payload) {
-         state.dataFromBody = payload;
+      // REGISTRO obtiene data enviada por el usuario
+      setuserDB(state, payload) {
+         state.userDB = payload;
       },
 
-      // Login
-      getUser(state, payload) {
+      // COMPROBADOR DE USER TOKEN 
+      checkUser(state, payload) {
          state.token = payload;
+
          if (payload === '') {
             state.userDB === '';
          } else {
             state.userDB = decode(payload);
+            console.log('from vuex:', state.userDB.tokenPayload);
             router.push({
-               name: 'Aventuras'
+               name: 'Dashboard'
             });
          }
-      }
-   },
-   actions: {
-      // Registro
+      },
 
-      async createUser({
+      // RELLENADOR DE ARRAYS
+      refillArrays(state, payload) {
+         if (state.userList) {
+            state.userList = payload;
+         } else if (state.adventures) {
+            state.adventures = payload;
+         } else if (state.shoppings) {
+            state.shoppings = payload;
+         } else {
+            state.invoices = payload;
+         }
+      },
+
+   },
+
+   actions: {
+
+      // PETICIÓN POST para crear cuenta usuario
+      createUser: async ({
             commit
          },
-         dataFromBody
-      ) {
+         userDB
+      ) => {
          try {
-            const response = await axios.post(`users/create`, dataFromBody.user);
+            const response = await axios.post(`users/create`, userDB.user);
             console.log(response);
             if (response.status === 200) {
                router.push({
@@ -56,10 +75,10 @@ export default {
             let errorMessage = error.response.data.error;
             //console.log("Error1:", errorMessage);
             if (!errorMessage) {
-               dataFromBody.message = error.response.data.message;
+               userDB.message = error.response.data.message;
                // console.log("errro2:", error.response.data.message);
             } else {
-               dataFromBody.message = errorMessage;
+               userDB.message = errorMessage;
                //console.log("error3", error.response);
             }
          }
@@ -67,35 +86,64 @@ export default {
       },
 
 
-      // Login
+      // LOGIN
       saveUser({
          commit
       }, payload) {
          localStorage.setItem('token', payload);
-         commit('getUser', payload);
+         commit('checkUser', payload);
       },
+
+      // LOGOUT
       logout({
          commit
       }) {
-         commit('getUser', '');
+         commit('checkUser', '');
          localStorage.removeItem('token');
          router.push({
             name: 'Home'
          });
       },
+
+      // PETTICIÓN GET USER LIST
+      getUsers: async ({
+         commit
+      }, token) => {
+         let config = {
+            headers: {
+               authorization: token
+            }
+         }
+         const userListJSON = await axios.get('users/list', config);
+         const userList = userListJSON.data.data;
+         console.log('FROM GET USERS:',userList);
+         commit('refillArrays', userList)
+      },
+      getAdventures: async ({
+         commit
+      },token) => {
+         let config = {
+            headers: {
+               authorization: token
+            }
+         }
+         const adventureListJSON = await axios.get('adventures/list', config);
+         const adventureList = adventureListJSON.data.data;
+         console.log("FROM GET ADVENTURES:", adventureList);
+         commit('refillArrays', adventureList)
+      },
+
+      // LECTOR USER TOKEN LOCALSTORAGE
       readToken({
          commit
       }) {
          const token = localStorage.getItem('token');
-
-
          if (token) {
-            commit('getUser', token);
+            commit('checkUser', token);
          } else {
-            commit('getUser', '');
+            commit('checkUser', '');
          }
       }
-
    },
    getters: {
       isActive: state => !!state.token
