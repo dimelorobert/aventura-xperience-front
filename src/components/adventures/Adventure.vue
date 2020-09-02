@@ -13,9 +13,12 @@
       <div class="info-card">
         <h3>{{adventure.name}}</h3>
         <hr />
-        <p>
-          <i class="fas fa-circle"></i> 
-          <strong>{{adventure.isAvailable}}</strong>
+        <p
+          :class="{ green: adventure.isAvailable ===  'Disponible', red: adventure.isAvailable === 'No disponible' }"
+        >
+          <strong
+            :class="{ disponible: adventure.isAvailable ===  'Disponible', noDisponible: adventure.isAvailable === 'No disponible' }"
+          > {{adventure.isAvailable ===  'Disponible' ? '🟢' : '🔴' }}  {{adventure.isAvailable}}</strong>
         </p>
         <p>{{adventure.description}}</p>
         <p>
@@ -53,6 +56,8 @@ export default {
   data() {
     return {
       staticFolder: process.env.VUE_APP_STATIC,
+      disponible: "🟢",
+      noDisponible: " 🔴",
     };
   },
   methods: {
@@ -96,7 +101,7 @@ export default {
   background-image: linear-gradient(19deg, #fe285a 0%, #ff7e9b 100%);
   height: 5rem;
   width: 4.5rem;
-  border-radius: 0.2rem;
+  border-radius: 0.25rem;
 }
 .container-date .date {
   line-height: 2rem;
@@ -109,8 +114,8 @@ export default {
 }
 .container-image-card img {
   width: 100%;
-  border-top-right-radius: 0.2rem;
-  border-top-left-radius: 0.2rem;
+  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 0.25rem;
 }
 .info-card {
   padding: 0 1.5rem;
@@ -159,5 +164,14 @@ hr {
 .btn-dark:hover {
   color: #000000;
   background-color: transparent;
+}
+
+/*estilos disponible*/
+.green {
+  color: rgb(0, 99, 0);
+}
+
+.red {
+  color: rgb(160, 0, 0);
 }
 </style>

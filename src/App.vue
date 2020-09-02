@@ -4,15 +4,18 @@
       <figure>
         <img src="./assets/img/logo-ax.png" class="animate__animated animate__flipInX" />
       </figure>
-      <router-link to="/">Home |</router-link>
-      <router-link v-if="isActive" :to="{name:'Aventuras'}">Aventuras |</router-link>
-      <router-link v-if="isActive" :to="{name:'Dashboard'}">Perfil |</router-link> 
-      <router-link :to="{name:'About'}">About</router-link> |
-      <router-link v-if="!isActive" :to="{name:'Registro'}">Registro |</router-link>
-      <router-link v-if="!isActive" :to="{name:'Login'}">Login |</router-link>
-      <a @click="logout()" v-if="isActive">Logout |</a>
+      <nav class="main-menu">
+        <router-link to="/">Home</router-link>
+        <router-link v-if="isActive" :to="{name:'Aventuras'}">Aventuras</router-link>
+
+        <router-link :to="{name:'About'}">About</router-link>
+        <router-link v-if="!isActive" :to="{name:'Registro'}">Registro</router-link>
+        <router-link v-if="!isActive" :to="{name:'Login'}">Login</router-link>
+        <router-link v-if="isActive" :to="{name:'Dashboard'}">Perfil</router-link>
+        <a @click="logout()" v-if="isActive">Logout</a>
+      </nav>
     </div>
-    
+
     <vue-snotify></vue-snotify>
     <router-view />
   </div>
@@ -20,7 +23,6 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import Snotify from "vue-snotify";
-import {VueTabs, VTab} from 'vue-nav-tabs'
 
 export default {
   name: "App",
@@ -45,6 +47,7 @@ export default {
   box-sizing: border-box;
   line-height: 2.2rem;
 }
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -60,10 +63,18 @@ export default {
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+  text-decoration: none;
 }
-
+.main-menu {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 80%;
+  padding: 1rem;
+}
 #nav a.router-link-exact-active {
   color: #fe285a;
+  text-decoration: underline;
 }
 #nav figure {
   display: flex;

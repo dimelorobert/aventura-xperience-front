@@ -1,19 +1,24 @@
 <template>
   <div class="aventuras-container">
-    <adventure v-for="(adventure, index) in adventures" :key="adventure.id" :adventure="adventure" :index="index" @vacancy="modifyVacancy" />
-   
+    <adventure
+      v-for="(adventure, index) in adventures"
+      :key="adventure.id"
+      :adventure="adventure"
+      :index="index"
+      @vacancy="modifyVacancy"
+    />
   </div>
 </template>
 
 <script>
 import { dateFilter } from "vue-date-fns";
 import locale from "date-fns/locale/es";
-import { mapState, mapActions } from 'vuex';
-import Adventure from '@/components/adventures/Adventure'
+import { mapState, mapActions } from "vuex";
+import Adventure from "@/components/adventures/Adventure";
 
 export default {
-  name: 'Adventures',
-  components: {Adventure},
+  name: "Adventures",
+  components: { Adventure },
   data() {
     return {
       //adventures: [],
@@ -51,5 +56,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.aventuras-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin: 1rem;
+}
 </style>

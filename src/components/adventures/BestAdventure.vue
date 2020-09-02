@@ -3,12 +3,12 @@
     <div class="best-container">
       <div class="best-main-container">
         <div class="slot-card">
-          <iframe
+          <!-- <iframe
             src="https://www.youtube.com/embed/l9m4cW2yxy0?start=13"
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-          />
+          /> -->
         </div>
         <div class="slot-card">
           <h2>Bungee Jumping</h2>

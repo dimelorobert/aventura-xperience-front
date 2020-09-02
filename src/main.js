@@ -13,11 +13,6 @@ import vueHeadful from 'vue-headful';
 
 Vue.component('vue-headful', vueHeadful);
 
-// Vue tabs
-import VueTabs from 'vue-nav-tabs'
-import 'vue-nav-tabs/themes/vue-tabs.css'
-
-
 // Snotify
 import Snotify, {
   SnotifyPosition
@@ -57,7 +52,7 @@ Vue.filter("date", createDateFilter("dd 'de' MMM 'de' yyyy", {
 
 import Vuelidate from 'vuelidate'
 
-Vue.use(VueAxios, axios, Vuelidate, VueTabs,vueHeadful, VueCountdown);
+Vue.use(VueAxios, axios, Vuelidate,vueHeadful, VueCountdown);
 
 Vue.config.productionTip = false
 

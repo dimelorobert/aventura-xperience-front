@@ -112,9 +112,10 @@ export default {
 .registro-container {
   background: url("../assets/img/parachutes.png"),
     url("../assets/img/mountainman.png");
-  background-position: 55rem -9rem, -8rem 15rem;
+  background-position: 65rem -9rem, -8rem 25rem;
   background-size: auto contain;
   background-repeat: no-repeat;
+  height: 100vh;
 }
 ::placeholder {
   color: #ffffff;

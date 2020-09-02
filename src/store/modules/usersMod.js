@@ -10,13 +10,10 @@ export default {
 
    // variables a usar
    state: {
-      user_id: '',
-      token: '',
-      userDB: '',
+      user_data: null,
+      token: null,
+      userDB: null,
       userList: [],
-      adventureArray: [],
-      shoppings: [],
-      invoices: [],
    },
    mutations: {
 
@@ -29,11 +26,16 @@ export default {
       checkUser(state, payload) {
          state.token = payload;
 
-         if (payload === '') {
-            state.userDB === '';
+         if (payload === null) {
+            state.userDB === null;
          } else {
             state.userDB = decode(payload);
-            console.log('from vuex:', state.userDB.tokenPayload);
+            localStorage.setItem('USER_ID', state.userDB.id);
+            localStorage.setItem('USER_IMAGE', state.userDB.id);
+            
+            console.log('from localstorage',data);
+            console.log('from vuex:', state.userDB.tokenPayload.id);
+
             router.push({
                name: 'Dashboard'
             });
@@ -42,16 +44,7 @@ export default {
 
       // RELLENADOR DE ARRAYS
       refillArrays(state, payload) {
-         /*if (state.userList) {
             state.userList = payload;
-         } else if (state.adventureArray) {
-            state.adventureArray = payload;
-         } else if (state.shoppings) {
-            state.shoppings = payload;
-         } else {
-            state.invoices = payload;
-         }*/
-         state.adventureArray = payload;
       },
 
    },
@@ -99,7 +92,7 @@ export default {
       logout({
          commit
       }) {
-         commit('checkUser', '');
+         commit('checkUser', null);
          localStorage.removeItem('token');
          router.push({
             name: 'Home'
@@ -107,32 +100,22 @@ export default {
       },
 
       // PETTICIÓN GET USER LIST
-      getUsers: async ({
+      /*getUser: async ({
          commit
-      }, token) => {
+      }, userDB) => {
          let config = {
             headers: {
-               authorization: token
+               authorization: userDB.token,
             }
          }
-         const userListJSON = await axios.get('users/list', config);
-         const userList = userListJSON.data.data;
-         console.log('FROM GET USERS:',userList);
-         commit('refillArrays', userList)
-      },
-      getAdventures: async ({
-         commit
-      },token) => {
-         let config = {
-            headers: {
-               authorization: token
-            }
+         const userJSON = await axios.get('users/', userDB.tokenPayload.id, config);
+         console.log(userJSON);
+         if (userJSON.status === 200) {
+            router.push({
+               name: 'Dashboard'
+            });
          }
-         const adventureListJSON = await axios.get('adventures/list', config);
-         const adventureList = adventureListJSON.data.data;
-         console.log("FROM GET ADVENTURES:", adventureList);
-         commit('refillArrays', adventureList)
-      },
+      },*/
 
       // LECTOR USER TOKEN LOCALSTORAGE
       readToken({
@@ -142,11 +125,18 @@ export default {
          if (token) {
             commit('checkUser', token);
          } else {
-            commit('checkUser', '');
+            commit('checkUser', null);
          }
       }
    },
    getters: {
-      isActive: state => !!state.token
+      isActive: state => !!state.token,
+      userExist(state) {
+         if (state.userDB === null) {
+            return false;
+         } else {
+            return true;
+         }
+      }
    },
 }

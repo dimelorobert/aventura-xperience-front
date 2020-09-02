@@ -2,6 +2,7 @@
   <div class="login-container">
     <vue-headful title="Login || Aventura-Xperience" description="Tu aventura empieza aquí" />
     <h1>Login</h1>
+ 
 
     <form @submit.prevent="login" class="animate__animated animate__fadeInLeft">
       <!-- CORREO ELECTRONICO -->
@@ -99,21 +100,24 @@
 <script>
 import { mapActions } from "vuex";
 import Snotify from "vue-snotify";
+import { IntersectingCirclesSpinner } from "epic-spinners";
 
 export default {
   name: "Login",
   components: {
     Snotify,
+    IntersectingCirclesSpinner,
   },
   data() {
     return {
+      showLoading: false,
       userFromBody: {
-        email: "",
-        password: "",
+        email: null,
+        password: null,
       },
       showModal: false,
-      message: "",
-      recoveryMail: "",
+      message: null,
+      recoveryMail: null,
     };
   },
 
@@ -123,7 +127,7 @@ export default {
     // INICIAR SESIÓN
     async login() {
       try {
-        
+        this.showLoading = true;
         const response = await this.axios.post(
           `users/login`,
           this.userFromBody
@@ -132,28 +136,26 @@ export default {
         this.saveUser(token);
 
         console.log(response.data.message);
-        if(response.status === 200) {
+        if (response.status === 200) {
           this.$snotify.async(
-          "Cargando datos...",
-          "Por favor, espere...",
-          () =>
-            new Promise((resolve, reject) => {
-              setTimeout(
-                () =>
-                  resolve({
-                    title: "Hola!😊✌",
-                    body: `${response.data.message}`,
-                    config: {
-                      closeOnClick: true,
-                    },
-                  }),
-                100
-              );
-            })
-        );
+            "Cargando datos...",
+            "Por favor, espere...",
+            () =>
+              new Promise((resolve, reject) => {
+                setTimeout(
+                  () =>
+                    resolve({
+                      title: "Hola!😊✌",
+                      body: `${response.data.message}`,
+                      config: {
+                        closeOnClick: true,
+                      },
+                    }),
+                  200
+                );
+              })
+          );
         }
-
-        
       } catch (error) {
         let errorMessage = error.response.data.error;
         let errorSnotify;

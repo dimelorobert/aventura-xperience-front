@@ -9,9 +9,7 @@
         @click="activetab=1"
         id="user-avatar"
         v-bind:class="[ activetab === 1 ? 'active' : '' ]"
-      >
-      Role:
-      </figure>
+      >Role:</figure>
       <a @click="activetab=1" v-bind:class="[ activetab === 1 ? 'active' : '' ]">Datos Usuario</a>
       <a @click="activetab=2" v-bind:class="[ activetab === 2 ? 'active' : '' ]">Avatar</a>
       <a @click="activetab=3" v-bind:class="[ activetab === 3 ? 'active' : '' ]">Crear Aventura</a>
@@ -22,48 +20,57 @@
 
     <div class="content">
       <div v-show="activetab === 1" class="tabcontent">
-        
         <h2>Datos Usuario</h2>
 
         <form>
           <div class="input-container">
             <div class="input-data">
-              <label for="name">Nombre: 
-              <input type="text" name="name" id="name" autocomplete="on" value /></label>
+              <label for="name">
+                Nombre:
+                <input type="text" name="name" id="name" autocomplete="on" value />
+              </label>
             </div>
             <div class="input-data">
-              <label for="surname">Apellidos: 
-              <input type="text" name="surname" id="surname" autocomplete="on" /></label>
+              <label for="surname">
+                Apellidos:
+                <input type="text" name="surname" id="surname" autocomplete="on" />
+              </label>
             </div>
           </div>
 
           <div class="input-container">
-            <label for="date">Fecha de nacimiento: 
-            <input type="date" name="date" id="date" /></label>
+            <label for="date">
+              Fecha de nacimiento:
+              <input type="date" name="date" id="date" />
+            </label>
           </div>
           <div class="input-container">
             <div class="input-data">
-              <label for="country">País: 
-              <select name="country" id="country">
-                <option value>Selecciona..</option>
-                <option></option>
-              </select></label>
+              <label for="country">
+                País:
+                <select name="country" id="country">
+                  <option value>Selecciona..</option>
+                  <option></option>
+                </select>
+              </label>
             </div>
             <div class="input-data">
-              <label for="city">Ciudad: 
-              <select name="city" id="city" required>
-                <option value>Selecciona..</option>
-                <option ></option>
-              </select></label>
+              <label for="city">
+                Ciudad:
+                <select name="city" id="city" required>
+                  <option value>Selecciona..</option>
+                  <option></option>
+                </select>
+              </label>
             </div>
           </div>
           <div class="input-container">
             <div class="input-data">
-              <label for="email">Email: </label>
+              <label for="email">Email:</label>
               <input type="text" name="email" id="email" autocomplete="on" />
             </div>
             <div class="input-data">
-              <label for="password">Password: </label>
+              <label for="password">Password:</label>
               <input type="text" name="password" id="password" autocomplete="on" />
             </div>
           </div>
@@ -73,7 +80,9 @@
           </div>
         </form>
       </div>
-      <div v-show="activetab === 2" class="tabcontent">Caught in a landslide, no escape from reality</div>
+      <div v-show="activetab === 2" class="tabcontent">
+        <edituser />
+      </div>
       <div v-show="activetab === 3" class="tabcontent">Open your eyes, look up to the skies and see</div>
       <div v-show="activetab === 4" class="tabcontent">Caught in a landslide, no escape from reality</div>
       <div v-show="activetab === 5" class="tabcontent">Open your eyes, look up to the skies and see</div>
@@ -83,20 +92,20 @@
 </template>
 
 <script>
+import edituser from "@/components/users/EditUser";
 
 export default {
   name: "UserDashboard",
+  components: {
+    edituser,
+  },
   data() {
     return {
       activetab: 1,
     };
   },
-  methods: {
-
-  },
-  created() {
-    
-  },
+  methods: {},
+  created() {},
 };
 </script>
 
