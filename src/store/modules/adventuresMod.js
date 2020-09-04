@@ -1,4 +1,3 @@
-
 import router from '@/router'
 import axios from 'axios'
 
@@ -19,6 +18,40 @@ export default {
      },
 
      actions: {
+          createUser: async ({
+                    commit
+               },
+               payload
+          ) => {
+               try {
+                    const response = await axios.post(`adventures/create`, {
+                         name: payload.name,
+                         surname: payload.surname,
+                         email: payload.email,
+                         password: payload.password
+                    });
+                    console.log(response);
+                    if (response.status === 200) {
+
+                         router.push({
+                              name: 'Login'
+                         });
+                    }
+               } catch (error) {
+
+                    let errorMessage;
+                    errorMessage = error.response.data.error;
+                    //console.log("Error1:", errorMessage);
+                    if (!errorMessage) {
+                         error.response.data.message;
+                         // console.log("errro2:", error.response.data.message);
+                    } else {
+                         errorMessage;
+                         //console.log("error3", error.response);
+                    }
+               }
+
+          },
 
           getAdventures: async ({
                commit

@@ -18,7 +18,7 @@
         >
           <strong
             :class="{ disponible: adventure.isAvailable ===  'Disponible', noDisponible: adventure.isAvailable === 'No disponible' }"
-          > {{adventure.isAvailable ===  'Disponible' ? '🟢' : '🔴' }}  {{adventure.isAvailable}}</strong>
+          >{{adventure.isAvailable === 'Disponible' ? '🟢' : '🔴' }} {{adventure.isAvailable}}</strong>
         </p>
         <p>{{adventure.description}}</p>
         <p>
@@ -38,7 +38,7 @@
 
       <div class="container-btn">
         <button class="btn-light">Reservar</button>
-        <button @click="addAdventure" class="btn-dark">Comprar</button>
+        <button class="btn-dark">Comprar</button>
       </div>
     </article>
   </div>
@@ -47,6 +47,7 @@
 <script>
 import { dateFilter } from "vue-date-fns";
 import locale from "date-fns/locale/es";
+
 export default {
   name: "Adventure",
   props: {
@@ -56,18 +57,9 @@ export default {
   data() {
     return {
       staticFolder: process.env.VUE_APP_STATIC,
-      disponible: "🟢",
-      noDisponible: " 🔴",
     };
   },
-  methods: {
-    // cuando se pasan valores/datos a eventos emitidops en el componente mejor en objeto
-    addAdventure() {
-      this.$emit("vacancy", {
-        index: this.index,
-      });
-    },
-  },
+  methods: {},
 };
 </script>
 

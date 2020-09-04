@@ -17,8 +17,8 @@ const routes = [{
   },
   {
     path: '/adventures',
-    name: 'Aventuras',
-    component: () => import( /* webpackChunkName: "about" */ '../components/adventures/Adventures.vue'),
+    name: 'Adventures',
+    component: () => import( /* webpackChunkName: "about" */ '../components/adventures/AdventuresList.vue'),
     meta: {
       requireAuth: true
     }
@@ -30,6 +30,12 @@ const routes = [{
 
   },
   {
+    path: '/users',
+    name: 'Users',
+    component: () => import( /* webpackChunkName: "about" */ '../components/users/UserList.vue'),
+
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import( /* webpackChunkName: "about" */ '../views/LoginView.vue')
@@ -37,11 +43,7 @@ const routes = [{
   {
     path: '/user-dashboard',
     name: 'Dashboard',
-    component: () => import( /* webpackChunkName: "about" */ '../views/UserDashboard.vue')
-  }, {
-    path: '/edit-user/:id',
-    name: 'EditUser',
-    component: () => import( /* webpackChunkName: "about" */ '../views/UserDashboard.vue')
+    component: () => import( /* webpackChunkName: "about" */ '../views/Dashboard.vue')
   },
   {
     path: '/activation-account',

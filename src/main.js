@@ -30,6 +30,7 @@ Vue.use(Snotify, options)
 // Axios
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+Vue.use(VueAxios, axios);
 
 
 axios.defaults.baseURL = `http://localhost:3000/`
@@ -52,7 +53,7 @@ Vue.filter("date", createDateFilter("dd 'de' MMM 'de' yyyy", {
 
 import Vuelidate from 'vuelidate'
 
-Vue.use(VueAxios, axios, Vuelidate,vueHeadful, VueCountdown);
+Vue.use(Vuelidate,vueHeadful, VueCountdown);
 
 Vue.config.productionTip = false
 

@@ -1,12 +1,16 @@
 <template>
   <section class="full-content">
     <div class="title">
-      
-      <blockquote cite="https://psicologiaymente.com/reflexiones/frases-experiencia"><p>La experiencia no es lo que te sucede, sino lo que haces con lo que te sucede</p> </blockquote><br><h1>¡ Vive tu aventura!</h1>
-      <br>
+      <blockquote cite="https://psicologiaymente.com/reflexiones/frases-experiencia">
+        <p>La experiencia no es lo que te sucede, sino lo que haces con lo que te sucede</p>
+      </blockquote>
+      <br />
+      <h1>¡ Vive tu aventura!</h1>
+      <br />
       <div class="container-btn">
-            <button class="btn-dark">Buscar mi aventura</button>
-          </div>
+        <router-link class="routerlink" :to="{name:'Adventures'}">
+        <button class="btn-dark">Buscar mi experiencia</button></router-link>
+      </div>
     </div>
     <img src="http://localhost:8080/media/parallax-image.jpg" alt="Parallax Imagen" />
   </section>
@@ -19,7 +23,16 @@ export default {
 </script>
 
 <style scoped>
+.routerlink {
+  text-decoration: none;
+}
+.full-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .full-content img {
+  
   max-width: 100%;
   min-height: inherit;
   width: 100%;
@@ -31,20 +44,20 @@ export default {
 .title {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  position: relative;
+  text-align: center; 
+  max-width: max-content;
   position: absolute;
   color: white;
-  height: 550px;
-  padding-bottom: 5rem;
-  padding-left: 10rem;
+  
 }
 .title h1 {
   font-size: 3rem;
-  color: #050023 ;
+  color: #050023;
   cursor: pointer;
 }
 .title h1:hover {
-  color: #FE285A;
+  color: #fe285a;
 }
 .title p {
   font-size: 1.2rem;

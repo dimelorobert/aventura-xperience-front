@@ -2,14 +2,13 @@
   <div class="login-container">
     <vue-headful title="Login || Aventura-Xperience" description="Tu aventura empieza aquí" />
     <h1>Login</h1>
- 
 
-    <form @submit.prevent="login" class="animate__animated animate__fadeInLeft">
+    <form @submit.prevent="login(user)" class="animate__animated animate__fadeInLeft">
       <!-- CORREO ELECTRONICO -->
       <div class="input-container">
         <i class="fas fa-user" />
         <input
-          v-model="userFromBody.email"
+          v-model="user.email"
           type="email"
           name="email"
           class="input-style"
@@ -23,8 +22,8 @@
       <div class="input-container">
         <i class="fas fa-lock" />
         <input
-          v-model="userFromBody.password"
-          @keyup.enter="login"
+          v-model="user.password"
+          @keyup.enter="login(user)"
           type="password"
           name="password"
           class="input-style"
@@ -50,7 +49,7 @@
 
     <div class="helper-links">
       <!-- CREAR CUENTA -->
-      <router-link to="/registro">Crear cuenta 📒</router-link>
+      <router-link :to="{name: 'Registro'}">Crear cuenta 📒</router-link>
 
       <!-- RECUPERAR PASSWORD -->
       <!-- MODAL -->
@@ -98,7 +97,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 import Snotify from "vue-snotify";
 import { IntersectingCirclesSpinner } from "epic-spinners";
 
@@ -110,92 +109,18 @@ export default {
   },
   data() {
     return {
+      user: { email: null, password: null },
       showLoading: false,
-      userFromBody: {
-        email: null,
-        password: null,
-      },
       showModal: false,
       message: null,
       recoveryMail: null,
     };
   },
-
+  computed: {
+    ...mapState("usersMod", ["userLogin"]),
+  },
   methods: {
-    ...mapActions("usersMod", ["saveUser"]),
-
-    // INICIAR SESIÓN
-    async login() {
-      try {
-        this.showLoading = true;
-        const response = await this.axios.post(
-          `users/login`,
-          this.userFromBody
-        );
-        const token = response.data.data.token;
-        this.saveUser(token);
-
-        console.log(response.data.message);
-        if (response.status === 200) {
-          this.$snotify.async(
-            "Cargando datos...",
-            "Por favor, espere...",
-            () =>
-              new Promise((resolve, reject) => {
-                setTimeout(
-                  () =>
-                    resolve({
-                      title: "Hola!😊✌",
-                      body: `${response.data.message}`,
-                      config: {
-                        closeOnClick: true,
-                      },
-                    }),
-                  200
-                );
-              })
-          );
-        }
-      } catch (error) {
-        let errorMessage = error.response.data.error;
-        let errorSnotify;
-
-        let codeError = error.response.data.code;
-        if (codeError === null || codeError === undefined) {
-          codeError = "campo requerido";
-        }
-
-        //console.log("Error1:", errorMessage);
-        if (!errorMessage) {
-          //this.message = error.response.data.message;
-          errorSnotify = error.response.data.message;
-          // console.log("errro2:", error.response.data.message);
-        } else {
-          //this.message = errorMessage;
-          errorSnotify = error.response.data.error;
-          //console.log("error3", error.response);
-        }
-
-        this.$snotify.async(
-          "Por favor, espere...",
-          "Comprobación de datos",
-          () =>
-            new Promise((resolve, reject) => {
-              setTimeout(
-                () =>
-                  reject({
-                    title: `Error: ${codeError}`,
-                    body: `${errorSnotify}`,
-                    config: {
-                      closeOnClick: true,
-                    },
-                  }),
-                1000
-              );
-            })
-        );
-      }
-    },
+    ...mapActions("usersMod", ["login"]),
 
     // RECUPERAR CONTRASEÑA OLVIDADA
     async recoveryPassword() {

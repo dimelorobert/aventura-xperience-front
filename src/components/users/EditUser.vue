@@ -81,10 +81,11 @@ export default {
        ...mapState("usersMod", ["user_data"]),
   },
   methods: {
-       ...mapActions("usersMod", ["getUser"]),
+
+
   },
   created() {
-       this.getUser();
+      // this.getUser();
   },
 };
 </script>

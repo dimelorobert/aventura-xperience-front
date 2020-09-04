@@ -3,16 +3,16 @@
     <vue-headful title="Registro || Aventura-Xperience" description="Tu aventura empieza aquí" />
     <h1>Nuevo usuario</h1>
 
-    <form @submit.prevent="createUser(dataFromBody)" class="animate__animated animate__fadeInUp">
+    <form @submit.prevent="createUser(user)" class="animate__animated animate__fadeInUp">
       <div class="input-container">
         <label for="name">Nombre</label>
-        <input v-model="dataFromBody.user.name" type="text" name="name" id="name" autocomplete="on" />
+        <input v-model="user.name" type="text" name="name" id="name" autocomplete="on" />
       </div>
 
       <div class="input-container">
         <label for="surname">Apellidos</label>
         <input
-          v-model="dataFromBody.user.surname"
+          v-model="user.surname"
           type="text"
           surname="surname"
           name="surname"
@@ -22,11 +22,10 @@
         />
       </div>
 
-
       <div class="input-container">
         <label for="email">Email</label>
         <input
-          v-model="dataFromBody.user.email"
+          v-model="user.email"
           type="email"
           name="email"
           class="input-style"
@@ -38,7 +37,7 @@
       <div class="input-container">
         <label for="password">Password</label>
         <input
-          v-model="dataFromBody.user.password"
+          v-model="user.password"
           type="password"
           name="password"
           class="input-style"
@@ -51,7 +50,7 @@
         <label for="accept"></label>
         Acepto terminos y condiciones
         <input
-        v-model="checked"
+          v-model="checked"
           type="checkbox"
           name="accept"
           id="accept"
@@ -63,16 +62,7 @@
       </div>
     </form>
 
-    <div
-      v-if="dataFromBody.message != ''"
-      class="error animate__animated animate__tada"
-    >{{ dataFromBody.message }}</div>
-
-    <!-- <div
-      v-
-      :style="success"
-      class="error animate__animated animate__tada"
-    >{{ dataFromBody.message }}</div>-->
+    
   </div>
 </template>
 
@@ -81,25 +71,11 @@ import { mapActions } from "vuex";
 
 export default {
   name: "Registro",
-  components: {
-
-  },
+  components: {},
   data() {
     return {
       checked: false,
-      dataFromBody: {
-        user: {
-          name: "",
-          surname: "",
-          email: "",
-          password: "",
-        },
-        message: "",
-        error: "",
-      },
-      success: {
-        backgroundColor: "green",
-      },
+      user: { name: null, surname: null, email: null, password: null },
     };
   },
   methods: {

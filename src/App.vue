@@ -1,14 +1,16 @@
 <template>
   <div id="app">
     <div id="nav">
-      <figure>
-        <img src="./assets/img/logo-ax.png" class="animate__animated animate__flipInX" />
-      </figure>
+      <router-link to="/">
+        <figure class="container-logo">
+          <img src="./assets/img/logo-ax.png" class="animate__animated animate__flipInX" />
+        </figure>
+      </router-link>
       <nav class="main-menu">
         <router-link to="/">Home</router-link>
-        <router-link v-if="isActive" :to="{name:'Aventuras'}">Aventuras</router-link>
+        <router-link v-if="isActive" :to="{name:'Adventures'}">Aventuras</router-link>
 
-        <router-link :to="{name:'About'}">About</router-link>
+        <!-- <router-link :to="{name:'About'}">About</router-link> -->
         <router-link v-if="!isActive" :to="{name:'Registro'}">Registro</router-link>
         <router-link v-if="!isActive" :to="{name:'Login'}">Login</router-link>
         <router-link v-if="isActive" :to="{name:'Dashboard'}">Perfil</router-link>
@@ -55,6 +57,13 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+.container-logo {
+  display: flex;
+}
+.container-logo img {
+  max-width: 100%;
+  width: 25rem;
+}
 
 #nav {
   padding: 30px;
@@ -69,9 +78,9 @@ export default {
   display: inline-flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 80%;
-  padding: 1rem;
+  margin: 2rem 0;
 }
+
 #nav a.router-link-exact-active {
   color: #fe285a;
   text-decoration: underline;
@@ -81,9 +90,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-#nav figure img {
-  width: 18.75rem;
-}
+
 form {
   display: flex;
   flex-direction: column;
@@ -113,5 +120,6 @@ button {
   padding: 0 1.5rem;
   border-radius: 0.25rem;
   cursor: pointer;
+  font-size: 1rem;
 }
 </style>

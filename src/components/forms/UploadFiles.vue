@@ -1,33 +1,36 @@
 <template>
-  <form @submit.prevent="sendFile" enctype="multipart/form-data">
+  <form @submit.prevent="onUpload" enctype="multipart/form-data">
     <div class="field">
-      <input @change="seleFile" ref="file" type="file" />
+      <input @change="onFileSelected" type="file" />
     </div>
 
-    <div class="field"></div>
+    <div class="container-btn"><button class="btn-dark">Subir</button></div>
   </form>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "UploadFiles",
   data() {
     return {
-      file: "",
+      selectedFile: null,
     };
   },
   methods: {
-    selectFile() {
-      this.file = this.$refs.file.files[0];
+    ...mapActions("usersMod", ["editUser"]),
+
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0];
     },
-    async sendfile() {
-      const formData = new formData();
-      formData.append("file", this.file);
-      try {
-        const response = await this.axios.post(`users/create`, formData);
-      } catch (error) {
-        console.log(error.response.data.message);
-      }
+    onUpload() {
+      const formData = new FormData();
+      formData.append(
+        "image",
+        this.selectedFile,
+        this.selectedFile.name
+      );
+      this.editUser(formData);
     },
   },
 };
