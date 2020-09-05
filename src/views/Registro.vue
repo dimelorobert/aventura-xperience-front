@@ -39,6 +39,7 @@
         <label for="country">País</label>
         <select v-model="user.country" name="country" id="country">
           <option value>Selecciona..</option>
+          <option value="España">España</option>
           <option
             v-for="country in countries"
             :key="country.id"
@@ -49,6 +50,7 @@
         <label for="city">Ciudad</label>
         <select v-model="user.city" name="city" id="city" required>
           <option value>Selecciona..</option>
+          <option value="A Coruña">A Coruña</option>
           <option v-for="city in cities" :key="city.id" :value="city.name">{{city.name}}</option>
         </select>
       </div>

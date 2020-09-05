@@ -5,7 +5,7 @@
       description="Tu aventura empieza aquí"
     />
     <figure class="container-image">
-      <img :src="'http://localhost:3000/' + `${userById.image}`" alt />
+      <img :src="user_image + '/' + userById.image" alt />
     </figure>
     <span>{{userById.name}} {{userById.surname}}</span>
     <span>Role: {{userById.role}}</span>
@@ -14,7 +14,7 @@
         <details>
           <summary>Información del usuario</summary>
           <p v-if="null || undefined">Nombre: Sin especifica</p>
-          <p v-else>Nombre: {{userById.name}}r</p>
+          <p v-else>Nombre: {{userById.name}}</p>
           <p v-if="null || undefined">Apellido: Sin especificar</p>
           <p v-else>Apellidos: {{userById.surname}}</p>
           <p v-if="null || undefined">Fecha de nacimiento: Sin especificar</p>
@@ -240,6 +240,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import path from "path";
 import axios from "axios";
 
 export default {
@@ -286,7 +287,7 @@ export default {
         start_date_event: null,
       },
       activetab: 1,
-      staticFolder: process.env.VUE_APP_STATIC_USERS,
+      user_image: process.env.VUE_APP_URL_API ,
       communities: [],
       cities: [],
     };
@@ -297,6 +298,7 @@ export default {
     total: function () {
       return this.value * 10;
     },
+    
   },
   methods: {
     ...mapActions("usersMod", ["getUser"]),
@@ -305,7 +307,7 @@ export default {
     onFileSelected(event) {
       this.user.image = event.target.files[0];
     },
-
+   
     reload() {
       this.$forceUpdate();
     },
