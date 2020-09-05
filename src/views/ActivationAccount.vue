@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     //MAPACTION AQUI
-    ...mapActions("usersMod", ["getUsers"]),
+    ...mapActions("usersMod", ["getUser"]),
     ...mapActions("adventuresMod", ["getAdventures"]),
 
     pushToLogin() {
@@ -46,7 +46,7 @@ export default {
     },
   },
   created() {
-    this.getUsers();
+    this.getUser();
     this.getAdventures();
     this.pushToLogin();
   },

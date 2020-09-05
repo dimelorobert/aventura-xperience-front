@@ -21,6 +21,37 @@
           autocomplete="on"
         />
       </div>
+      <div class="input-container">
+        <input v-model="user.date_birth" type="date" name="date" id="date" />
+      </div>
+      <div class="input-container">
+        <input v-model="user.genre" type="radio" name="genero" value="Hombre" id="masculino" />
+        <label for="masculino">Hombre</label>
+
+        <input v-model="user.genre" type="radio" name="genero" value="Mujer" id="femenino" />
+        <label for="femenino">Mujer</label>
+
+        <input v-model="user.genre" type="radio" name="genero" value="otro" id="otro" />
+        <label for="otro">Otro</label>
+      </div>
+
+      <div class="input-container">
+        <label for="country">País</label>
+        <select v-model="user.country" name="country" id="country">
+          <option value>Selecciona..</option>
+          <option
+            v-for="country in countries"
+            :key="country.id"
+            :value="country.name"
+          >{{country.name}}</option>
+        </select>
+
+        <label for="city">Ciudad</label>
+        <select v-model="user.city" name="city" id="city" required>
+          <option value>Selecciona..</option>
+          <option v-for="city in cities" :key="city.id" :value="city.name">{{city.name}}</option>
+        </select>
+      </div>
 
       <div class="input-container">
         <label for="email">Email</label>
@@ -45,24 +76,26 @@
           autocomplete="on"
         />
       </div>
+      <div class="input-container">
+        <input @change="onFileSelected" type="file" id="image" />
+      </div>
 
       <div class="accept">
         <label for="accept"></label>
         Acepto terminos y condiciones
         <input
-          v-model="checked"
+          v-model="user.acept_terms"
           type="checkbox"
           name="accept"
           id="accept"
           requerid
         />
       </div>
+
       <div class="container-btn">
         <button class="btn-dark">Registrame</button>
       </div>
     </form>
-
-    
   </div>
 </template>
 
@@ -74,12 +107,26 @@ export default {
   components: {},
   data() {
     return {
-      checked: false,
-      user: { name: null, surname: null, email: null, password: null },
+      user: {
+        name: null,
+        surname: null,
+        date_birth: null,
+        genre: null,
+        country: null,
+        city: null,
+        email: null,
+        password: null,
+        image: null,
+        acept_terms: null,
+      },
     };
   },
   methods: {
     ...mapActions("usersMod", ["createUser"]),
+
+    onFileSelected(event) {
+      this.user.image = event.target.files[0];
+    },
   },
 };
 </script>

@@ -1,6 +1,7 @@
 import router from '@/router'
 import axios from 'axios'
-
+import Vue from 'vue'
+import Swal from 'sweetalert2/src/sweetalert2.js'
 export default {
 
      // VARIABLE QUE SE ACTIVA EN TRUE PARA USAR MODULOS
@@ -61,10 +62,21 @@ export default {
                          authorization: token
                     }
                }
-               const adventureListJSON = await axios.get('adventures/list', config);
-               const adventureList = adventureListJSON.data.data;
-               console.log("FROM GET ADVENTURES:", adventureList);
-               commit('refillArrays', adventureList)
+               try {
+                    const response = await axios.get('adventures/list', config);
+                    const adventureList = response.data.data;
+                    console.log("FROM GET ADVENTURES:", adventureList);
+                    commit('refillArrays', adventureList);
+               } catch (error) {
+                   Swal.fire({
+                        title: `Error : ${error.response.status}`,
+                        text: `${error.response.data.message}`,
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                   })
+                    console.log(error.response.data.message);
+               }
+
           },
 
      },

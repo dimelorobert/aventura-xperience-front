@@ -25,6 +25,9 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import Snotify from "vue-snotify";
+import Swal from 'sweetalert2/src/sweetalert2.js'
+
+
 
 export default {
   name: "App",
@@ -42,6 +45,7 @@ export default {
 </script>
 
 <style>
+
 @import "~vue-snotify/styles/material.css";
 * {
   margin: 0;

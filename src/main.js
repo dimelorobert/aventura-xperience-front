@@ -24,7 +24,16 @@ const options = {
   }
 }
 
-Vue.use(Snotify, options)
+Vue.use(Snotify, options);
+
+// Swalert
+import VueSweetalert2 from 'vue-sweetalert2';
+import Swal from 'sweetalert2/src/sweetalert2.js'
+
+// If you don't need the styles, do not connect
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+Vue.use(VueSweetalert2,Swal);
 
 
 // Axios
