@@ -4,31 +4,31 @@
       <div class="slot-card">
         <i class="fas fa-tshirt"></i>
         <h3>Equipamiento</h3>
-
+<br>
         <p>Las actividades cuentan con el equipamiento necesario para garantizar la seguridad del cliente.</p>
       </div>
       <div class="slot-card">
         <i class="fas fa-shield-alt"></i>
         <h3>Seguridad</h3>
-
+<br>
         <p>Cada actividad cuenta con la supervisión de cuerpos de seguridad.</p>
       </div>
       <div class="slot-card">
         <i id="user-portada" class="fas fa-users"></i>
         <h3>Partners</h3>
-
+<br>
         <p>Actualmente trabajamos con las principales empresas de turismo a nivel nacional e internacional.</p>
       </div>
       <div class="slot-card">
         <i class="fas fa-smile-beam"></i>
         <h3>Diversión</h3>
-
+<br>
         <p>En cada una de las actividades te garantizamos una experiencia irrepetible .</p>
       </div>
       <div class="slot-card">
         <i class="fab fa-tripadvisor"></i>
         <h3>Calidad Tripadvisor</h3>
-
+<br>
         <p>Avalados por las buenas reseñas de todos nuestros clientes en tripadvisor.</p>
       </div>
     </div>

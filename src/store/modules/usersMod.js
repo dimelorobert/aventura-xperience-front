@@ -13,51 +13,54 @@ export default {
 
      // variables a usar
      state: {
+          user_id: null,
+          users: null,
+          userLogin: null,
           token: null,
-          userDB: {},
-          userById: {},
-          userList: [],
-          userEdit: {},
+
+          userByLogin: null,
+          userList: null,
+          userEdit: null,
+          communities: null,
+          activateCodeQuery: null,
 
      },
      mutations: {
-
           // REGISTRO obtiene data enviada por el usuario
-          setUser(state, payload) {
-               state.userDB = payload;
-               state.userTokenPayload = payload;
+          setUsers(state, payload) {
+               state.users = payload;
           },
 
-          // COMPROBADOR DE USER TOKEN 
-          checkUser(state, payload) {
+          // COMPROBADOR DE USER TOKEN LOGIN USER
+          checkUserToken(state, payload) {
                state.token = payload;
 
                if (payload === null) {
-                    state.userDB === null;
+                    state.userLogin = null;
                } else {
-                    state.userDB = decode(payload);
-
-                    /*router.push({
-                       name: 'Dashboard'
-                    });*/
+                    state.userLogin = decode(payload);
+                    console.log('FROM CHECK USER', state.userLogin);
                }
+          },
+          saveUserId(state, payload) {
+               state.user_id = payload;
           },
 
           // RELLENADOR DE ARRAYS
-          refillArrays(state, payload) {
-               state.userList = payload;
-               state.userById = payload;
-
+          saveUserDataLogin(state, payload) {
+               state.userByLogin = payload;
+               console.log("from refill dta user login", state.userByLogin);
+               //state.communities = payload;
           },
-          saveDataInLocal(state, payload) {
-               state.token = localStorage.setItem('token', payload.token);
-               state.user_id = localStorage.setItem('user_id', payload.tokenPayload.id);
-          },
-
+          saveCommunities(state, payload) {
+               state.communities = payload;
+               console.log("from refill communities", state.communities);
+          }
 
      },
 
      actions: {
+
 
           // PETICIÓN POST para crear cuenta usuario
           createUser: async ({
@@ -78,63 +81,137 @@ export default {
                formData.append("acept_terms", payload.acept_terms);
 
                try {
-                    const response = await axios.post(`users/create`, formData);
+                    const response = await axios.post(`/users/create`, formData);
                     console.log(response);
                     if (response.status === 200) {
-                         setTimeout(() => {
-                              router.push({
-                                   name: 'Login'
-                              });
-                         }, 3000);
 
+                         let timerInterval
+                         Swal.fire({
+                              title: 'Tu cuenta ha sido creada con exito!',
+                              html: `${response.data.message}
+                              
+                              `,
+                              timer: 2000,
+                              timerProgressBar: true,
+                              onBeforeOpen: () => {
+                                   Swal.showLoading()
+                                   timerInterval = setInterval(() => {
+                                        const content = Swal.getContent()
+                                        if (content) {
+                                             const b = content.querySelector('b')
+                                             if (b) {
+                                                  b.textContent = Swal.getTimerLeft()
+                                             }
+                                        }
+                                   }, 100)
+                              },
+                              onClose: () => {
+                                   clearInterval(timerInterval)
+                              }
+                         }).then((result) => {
+                              /* Read more about handling dismissals below */
+                              if (result.dismiss === Swal.DismissReason.timer) {
+                                   router.push({
+                                        name: "Adventures"
+                                   });
+                              }
+                         })
+
+                         router.push({
+                              name: 'Login'
+                         });
                     }
                } catch (error) {
-
-                    let errorMessage;
-                    errorMessage = error.response.data.error;
-                    //console.log("Error1:", errorMessage);
-                    if (!errorMessage) {
-                         error.response.data.message;
-                         // console.log("errro2:", error.response.data.message);
-                    } else {
-                         errorMessage;
-                         //console.log("error3", error.response);
-                    }
+                    Swal.fire({
+                         title: `Error : ${error.response.data.status}`,
+                         text: `${error.response.data.message}`,
+                         icon: 'error',
+                         confirmButtonText: 'Ok'
+                    })
                }
 
           },
 
           // LIST USERS
-          getUserList: async ({
+          getUsers: async ({
                commit
           }) => {
-               let token = localStorage.getItem("token");
-               let config = {
-                    headers: {
-                         authorization: token, //localStorage.getItem('token'),
+               try {
+                    let userList = [];
+
+                    let token = localStorage.getItem("token");
+                    let config = {
+                         headers: {
+                              authorization: token, //localStorage.getItem('token'),
+                         }
                     }
+
+                    const users = await axios.get('/users/list', config);
+                    userList = users.data.data;
+
+                    console.log("FROM GET USERS:", userList);
+                    commit('setUsers', userList)
+               } catch (error) {
+                    Swal.fire({
+                         title: `Error : ${error.response.status}`,
+                         text: `${error.response.data.message}`,
+                         icon: 'error',
+                         confirmButtonText: 'Ok'
+                    })
                }
-               const userListJSON = await axios.get('users/list', config);
-               const userList = userListJSON.data.data;
-               console.log("FROM GET USERS:", userList);
-               commit('refillArrays', userList)
+
           },
 
           // GET USER BY ID
           getUser: async ({
                commit
           }) => {
-               let token = localStorage.getItem("token");
-               let user_id = localStorage.getItem("user_id");
-               let config = {
-                    headers: {
-                         authorization: token, //localStorage.getItem('token'),
+               try {
+                    let token = localStorage.getItem("token");
+                    let user_id = localStorage.getItem("user_id");
+                    let config = {
+                         headers: {
+                              authorization: token,
+                         }
                     }
+                    const userListJSON = await axios.get(`/users/${user_id}`, config);
+                    const userData = await userListJSON.data.data;
+                    console.log("FROM GET USERS:", userData);
+                    await commit('saveUserDataLogin', userData)
+               } catch (error) {
+                    console.log(error);
+                    Swal.fire({
+                         title: `Error : ${error.response.data.status}`,
+                         text: `${error.response.data.message}`,
+                         icon: 'error',
+                         confirmButtonText: 'Ok'
+                    })
                }
-               const userListJSON = await axios.get(`users/${user_id}`, config);
-               const userData = userListJSON.data.data;
-               console.log("FROM GET USERS:", userData);
-               commit('refillArrays', userData)
+
+          },
+          // CITIES 
+          async getCities({
+               commit
+          }) {
+
+               try {
+                    const response = await axios.get(
+                         `/uploads/json/spanish-communities.json`
+                    );
+                    const communitiesList = response.data.data;
+
+                    commit('saveCommunities', communitiesList)
+
+                    console.log('FROM COMMUNITIES', response.data.data);
+               } catch (error) {
+                    console.log("FROM error GETCITIES", await error.response.data);
+                    Swal.fire({
+                         title: `Error : ${error.response.status}`,
+                         text: `${error.response.data.message}`,
+                         icon: 'error',
+                         confirmButtonText: 'Ok'
+                    })
+               }
           },
 
           // LOGIN
@@ -143,36 +220,58 @@ export default {
           }, payload) => {
                try {
                     const response = await axios.post(
-                         `users/login`, {
-                              email: payload.email,
-                              password: payload.password
-                         });
-                    //console.log(userDB.email);
-                    if (response.status === 200) {
+                         `/users/login`, payload);
+                    console.log('FROM LOGIN', response.data.data);
 
-                         router.push({
-                              name: "Adventures"
-                         });
-                    }
                     const loginData = response.data.data;
-                    commit('saveDataInLocal', loginData)
-                    commit('checkUser', loginData.token)
-                    commit('setUser', response.data.data.tokenPayload)
-                    console.log(error.response);
+                    localStorage.setItem('token', loginData.token);
+                    localStorage.setItem('user_id', loginData.tokenPayload.id);
+
+                    commit('checkUserToken', loginData.token);
+                    commit('saveUserId', loginData.tokenPayload.id);
+
+
+                    if (response.status === 200) {
+                         let timerInterval
+                         Swal.fire({
+                              title: 'Has iniciado sesión con éxito!',
+                              html: `${response.data.message}`,
+                              timer: 2000,
+                              timerProgressBar: true,
+                              onBeforeOpen: () => {
+                                   Swal.showLoading()
+                                   timerInterval = setInterval(() => {
+                                        const content = Swal.getContent()
+                                        if (content) {
+                                             const b = content.querySelector('b')
+                                             if (b) {
+                                                  b.textContent = Swal.getTimerLeft()
+                                             }
+                                        }
+                                   }, 100)
+                              },
+                              onClose: () => {
+                                   clearInterval(timerInterval)
+                              }
+                         }).then((result) => {
+                              /* Read more about handling dismissals below */
+                              if (result.dismiss === Swal.DismissReason.timer) {
+                                   router.push({
+                                        name: "Dashboard"
+                                   });
+                              }
+                         })
+                    }
+
                     //console.log(response.data.data.tokenPayload);
 
                } catch (error) {
-                    let errorMessage;
-                    errorMessage = await error.response.data.message;
-                    //console.log("Error1:", errorMessage);
-                    if (!errorMessage) {
-                         await error.response.data.message;
-                         // console.log("errro2:", error.response.data.message);
-                    } else {
-                         errorMessage;
-                         //console.log("error3", error.response);
-                    }
-
+                    Swal.fire({
+                         title: `Error : ${error.response.status}`,
+                         text: `${error.response.data.message}`,
+                         icon: 'error',
+                         confirmButtonText: 'Ok'
+                    })
                }
           },
           // PETICIÓN PUT para editar cuenta usuario
@@ -192,11 +291,9 @@ export default {
                const formData = new FormData();
                formData.append("name", payload.name, );
                formData.append("surname", payload.surname);
-               formData.append("date_birth", payload.date_birth);
                formData.append("country", payload.country);
                formData.append("city", payload.city);
-               formData.append("email", payload.email);
-               formData.append("password", payload.password);
+               formData.append("genre", payload.genre);
                formData.append("image", payload.image);
 
                try {
@@ -204,22 +301,55 @@ export default {
 
                     console.log(response);
                     if (response.status === 200) {
-                         location.reload();
+                         let timerInterval
+                         Swal.fire({
+                              title: 'Los datos se han actualizado con éxito',
+                              icon: 'success',
+                              html: `${response.data.message}`,
+                              timer: 2000,
+                              confirmButtonText: 'Ok',
+                              timerProgressBar: true,
+                              onBeforeOpen: () => {
+                                   Swal.showLoading()
+                                   timerInterval = setInterval(() => {
+                                        const content = Swal.getContent()
+                                        if (content) {
+                                             const b = content.querySelector('b')
+                                             if (b) {
+                                                  b.textContent = Swal.getTimerLeft()
+                                             }
+                                        }
+                                   }, 100)
+                              },
+                              onClose: () => {
+                                   clearInterval(timerInterval)
+                              }
+                         }).then((result) => {
+                              /* Read more about handling dismissals below */
+                              if (result.dismiss === Swal.DismissReason.timer) {
+                                   location.reload();
+                              }
+                         })
                     }
-               } catch (error) {
 
-                    console.log(error);
+
+                    
+               } catch (error) {
+                    Swal.fire({
+                         title: `Error : ${error.response.status}`,
+                         text: `${error.response.data.message}`,
+                         icon: 'error',
+                         confirmButtonText: 'Ok'
+                    })
                }
           },
-
-
 
 
           // LOGOUT
           logout({
                commit
           }) {
-               commit('checkUser', null);
+               commit('checkUserToken', null);
                localStorage.removeItem('token');
                localStorage.removeItem('user_id');
                router.push({
@@ -234,16 +364,16 @@ export default {
           }) {
                const token = localStorage.getItem('token');
                if (token) {
-                    commit('checkUser', token);
+                    commit('checkUserToken', token);
                } else {
-                    commit('checkUser', null);
+                    commit('checkUserToken', null);
                }
           }
      },
      getters: {
           isActive: state => !!state.token,
           userExist(state) {
-               if (state.userDB === null) {
+               if (state.userLogin === null) {
                     return false;
                } else {
                     return true;

@@ -16,39 +16,51 @@ const routes = [{
     component: () => import( /* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
-    path: '/adventures',
+    path: '/adventures/',
     name: 'Adventures',
-    component: () => import( /* webpackChunkName: "about" */ '../components/adventures/AdventuresList.vue'),
+    component: () => import( /* webpackChunkName: "adventures" */ '../views/adventures/Adventures.vue'),
     meta: {
-      requireAuth: true
+      requireAuth: true,
+    }
+  }, {
+    path: '/adventures/:id',
+    name: 'Adventure',
+    component: () => import( /* webpackChunkName: "adventures" */ '../components/adventures/Adventure.vue'),
+    meta: {
+      requireAuth: true,
     }
   },
   {
     path: '/create-account',
     name: 'Registro',
-    component: () => import( /* webpackChunkName: "about" */ '../views/Registro.vue'),
+    component: () => import( /* webpackChunkName: "registro" */ '../views/Registro.vue'),
 
   },
   {
-    path: '/users',
+    path: '/users/:id',
     name: 'Users',
-    component: () => import( /* webpackChunkName: "about" */ '../components/users/UserList.vue'),
+    component: () => import( /* webpackChunkName: "users" */ '../views/users/Users.vue'),
 
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import( /* webpackChunkName: "about" */ '../views/LoginView.vue')
+    component: () => import( /* webpackChunkName: "login" */ '../views/LoginView.vue')
   },
   {
     path: '/user-dashboard',
     name: 'Dashboard',
-    component: () => import( /* webpackChunkName: "about" */ '../views/Dashboard.vue')
+    component: () => import( /* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
   },
   {
     path: '/activation-account',
     name: 'Activation',
-    component: () => import( /* webpackChunkName: "about" */ '../views/ActivationAccount.vue')
+    component: () => import( /* webpackChunkName: "activation" */ '../views/ActivationAccount.vue')
+  },
+  {
+    path: '/activation-error-account',
+    name: 'ActivationError',
+    component: () => import( /* webpackChunkName: "activation-error" */ '../views/ActivationErrorAccount.vue')
   },
   {
     path: '*',

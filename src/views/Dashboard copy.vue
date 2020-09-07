@@ -12,8 +12,8 @@
         id="user-avatar"
         v-bind:class="[ activetab === 1 ? 'active' : '' ]"
       >
-        <img :src="'http://localhost:3000/uploads/users/' + `${userById.image}`" alt />
-        Role: {{userById.role}}
+        <img :src="'http://localhost:3000/uploads/users/' + `${userByLogin.image}`" alt />
+        Role: {{userByLogin.role}}
       </figure>
       <a @click="activetab=1" v-bind:class="[ activetab === 1 ? 'active' : '' ]">Datos Usuario</a>
       <a @click="activetab=2" v-bind:class="[ activetab === 2 ? 'active' : '' ]">Avatar</a>
@@ -28,18 +28,18 @@
       <div v-show="activetab === 1" class="tabcontent">
         <h2>Datos Usuario</h2>
 
-        <form @submit.prevent="editUser( userById)">
+        <form @submit.prevent="editUser( userByLogin)">
           <div class="input-container">
             <div class="input-data">
               <label for="name">
                 Nombre:
                 <input
-                  v-model=" userById.name"
+                  v-model=" userByLogin.name"
                   type="text"
                   name="name"
                   id="name"
                   autocomplete="on"
-                  :placeholder="userById.name"
+                  :placeholder="userByLogin.name"
                 />
               </label>
             </div>
@@ -47,12 +47,12 @@
               <label for="surname">
                 Apellidos:
                 <input
-                  v-model=" userById.surname"
+                  v-model=" userByLogin.surname"
                   type="text"
                   name="surname"
                   id="surname"
                   autocomplete="on"
-                  :placeholder="userById.surname"
+                  :placeholder="userByLogin.surname"
                 />
               </label>
             </div>
@@ -62,7 +62,7 @@
             <label for="date">
               Fecha de nacimiento:
               <input
-                v-model=" userById.date_birth"
+                v-model=" userByLogin.date_birth"
                 type="date"
                 name="date"
                 id="date"
@@ -73,14 +73,14 @@
             <div class="input-data">
               <label for="country">
               País:
-              <select v-model=" userById.country" name="country" id="country" required>
+              <select v-model=" userByLogin.country" name="country" id="country" required>
                 <option value="">Selecciona..</option>
                 <option value="España">España</option>
               </select></label>
             </div>
             <div class="input-data">
               <label for="city">Ciudad:
-              <select v-model=" userById.city" name="city" id="city">
+              <select v-model=" userByLogin.city" name="city" id="city">
                 <option>Selecciona..</option>
                 <optgroup
                   v-for="community in communities"
@@ -100,18 +100,18 @@
             <div class="input-data">
               <label for="email">Email:</label>
               <input
-                v-model=" userById.email"
+                v-model=" userByLogin.email"
                 type="email"
                 name="email"
                 id="email"
                 autocomplete="on"
-                :placeholder="userById.email"
+                :placeholder="userByLogin.email"
               />
             </div>
             <div class="input-data">
               <label for="password">Password:</label>
               <input
-                v-model=" userById.password"
+                v-model=" userByLogin.password"
                 type="password"
                 name="password"
                 id="password"
@@ -153,7 +153,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("usersMod", ["userById", "userTokenPayload", "userDB"]),
+    ...mapState("usersMod", ["userByLogin", "userTokenPayload"]),
   },
   methods: {
     ...mapActions("usersMod", ["getUser"]),

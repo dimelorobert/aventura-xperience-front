@@ -3,8 +3,7 @@
     <vue-headful
       title="Panel usuario || Aventura-Xperience"
       description="Tu aventura empieza aquí"
-    />
-    <userdetails />
+    /><userdetails user:userByLogin />
     <useredit />
   </div>
 </template>
@@ -17,8 +16,20 @@ import useredit from "@/components/users/UserEdit";
 import adventurecreate from "@/components/adventures/AdventureCreate";
 
 export default {
-  name: "Dashboard",
+  name: "Dashboard22",
   components: { userdetails, useredit },
+  data() {
+    return {};
+  },
+  created() {
+    this.getUser();
+  },
+  methods: {
+    ...mapActions(["getUser"]),
+  },
+  computed: {
+    ...mapState(["userByLogin"]),
+  },
 };
 </script>
 

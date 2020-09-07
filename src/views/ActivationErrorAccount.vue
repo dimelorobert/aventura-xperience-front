@@ -6,16 +6,17 @@
     />
 
     <section>
-      <h1>Tu cuenta ha sido activada con éxito! ✅</h1>
+      <h1>Codigo de Activación caducado ❌</h1>
       <br>
       <div class="container-info">
-        <p>Por favor, espera a ser redireccionado a la web</p>
-        <figure>
-          <img src="http://localhost:8080/media/escarabajo.gif" alt />
+        <p>Por favor, espera a ser redireccionado a la web para que solicites un nuevo codigo</p>
+
+        <figure class="container-mistake">
+          <img src="http://localhost:8080/media/mistake.png" alt />
         </figure>
         <router-link class="btn-dark" :to="{name:'Login'}">Login</router-link>
         <div class="container-countdown">
-          <countdown :time="3000">
+          <countdown :time="5000">
             <template slot-scope="props">Tiempo restante: {{ props.seconds }} segundos.</template>
           </countdown>
         </div>
@@ -29,13 +30,14 @@ import { mapState, mapActions } from "vuex";
 import VueCountdown from "@chenfengyuan/vue-countdown";
 
 export default {
-  name: "Activation",
+  name: "ActivationError",
 
   methods: {
     pushToLogin() {
       setTimeout(() => {
         window.location.href = "http://localhost:8080/#/login";
-      }, 2000);
+      }, 4000);
+      clearTimeout(setTimeout);
     },
   },
   created() {
@@ -44,5 +46,14 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.container-mistake {
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.container-mistake img {
+  max-width: 100%;
+  width: 300px;
+}
 </style>

@@ -46,7 +46,7 @@
 
 <script>
 import { dateFilter } from "vue-date-fns";
-import locale from "date-fns/locale/es";
+//import locale from "date-fns/locale/es";
 
 export default {
   name: "Adventure",

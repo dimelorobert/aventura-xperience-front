@@ -1,6 +1,7 @@
 <template>
   <div class="users-container">
     <div class="table100 ver2 m-b-110">
+      <h1>user : {{$route.params.id}}</h1>
       <table class="center" data-vertable="ver2">
         <tbody>
           <tr class="row100">
@@ -24,7 +25,7 @@ import { dateFilter } from "vue-date-fns";
 import locale from "date-fns/locale/es";
 import { mapState, mapActions } from "vuex";
 export default {
-  name: "User",
+  name: "User33",
   props: {
     user: Object,
     index: Number,

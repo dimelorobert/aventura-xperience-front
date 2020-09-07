@@ -63,7 +63,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 export default {
-  name: "EditUser",
+  name: "EditUser22",
   data() {
     return {
       user: {

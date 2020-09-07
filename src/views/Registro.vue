@@ -25,33 +25,35 @@
         <input v-model="user.date_birth" type="date" name="date" id="date" />
       </div>
       <div class="input-container">
-        <input v-model="user.genre" type="radio" name="genero" value="Hombre" id="masculino" />
-        <label for="masculino">Hombre</label>
-
-        <input v-model="user.genre" type="radio" name="genero" value="Mujer" id="femenino" />
-        <label for="femenino">Mujer</label>
-
-        <input v-model="user.genre" type="radio" name="genero" value="otro" id="otro" />
-        <label for="otro">Otro</label>
+        <label for="masculino">
+          <input v-model="user.genre" type="radio" name="genero" value="Hombre" id="masculino" />
+          Hombre
+        </label>
+        <label for="femenino">
+          <input v-model="user.genre" type="radio" name="genero" value="Mujer" id="femenino" />
+          Mujer
+        </label>
+        <label for="otro">
+          <input v-model="user.genre" type="radio" name="genero" value="otro" id="otro" checked />
+          Otro
+        </label>
       </div>
 
       <div class="input-container">
-        <label for="country">País</label>
         <select v-model="user.country" name="country" id="country">
           <option value>Selecciona..</option>
           <option value="España">España</option>
-          <option
-            v-for="country in countries"
-            :key="country.id"
-            :value="country.name"
-          >{{country.name}}</option>
         </select>
 
-        <label for="city">Ciudad</label>
-        <select v-model="user.city" name="city" id="city" required>
-          <option value>Selecciona..</option>
-          <option value="A Coruña">A Coruña</option>
-          <option v-for="city in cities" :key="city.id" :value="city.name">{{city.name}}</option>
+        <select v-model="user.city" name="city" id="city">
+          <option>Selecciona..</option>
+          <optgroup
+            v-for="community in communities"
+            :key="community.id"
+            :label="community.community"
+          >
+            <option v-for="city in community.cities" :key="city.id" :value="city.name">{{city.name}}</option>
+          </optgroup>
         </select>
       </div>
 
@@ -90,7 +92,7 @@
           type="checkbox"
           name="accept"
           id="accept"
-          requerid
+          required
         />
       </div>
 
@@ -102,7 +104,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions, createLogger } from "vuex";
 
 export default {
   name: "Registro",
@@ -123,12 +125,18 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState("usersMod", ["communities"]),
+  },
   methods: {
-    ...mapActions("usersMod", ["createUser"]),
+    ...mapActions("usersMod", ["createUser", "getCities"]),
 
     onFileSelected(event) {
       this.user.image = event.target.files[0];
     },
+  },
+  created() {
+    this.getCities();
   },
 };
 </script>

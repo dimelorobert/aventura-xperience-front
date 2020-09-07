@@ -42,7 +42,7 @@ import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios);
 
 
-axios.defaults.baseURL = `http://localhost:3000/`
+axios.defaults.baseURL = `http://localhost:3000`
 
 // Dotenv
 import dotenv from 'dotenv'
@@ -54,9 +54,11 @@ import {
 } from "vue-date-fns";
 import locale from "date-fns/locale/es";
 
-Vue.filter("date", createDateFilter("dd 'de' MMM 'de' yyyy", {
+Vue.filter("date", createDateFilter("dd 'de' MMM 'de' yyyy HH:mm:ss", {
   locale
 }));
+
+
 
 // vuelidate validaciones formularios
 

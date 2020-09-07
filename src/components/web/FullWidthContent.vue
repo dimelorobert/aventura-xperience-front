@@ -56,9 +56,7 @@ export default {
   color: #050023;
   cursor: pointer;
 }
-.title h1:hover {
-  color: #fe285a;
-}
+
 .title p {
   font-size: 1.2rem;
   color: #050023;
@@ -76,10 +74,10 @@ export default {
   color: #ffffff;
   background-color: #fe285a;
   margin: 1rem auto;
-  padding: 0 1.5rem;
+  padding: 1rem 1.5rem;
 }
 .btn-dark:hover {
-  color: #000000;
-  background-color: transparent;
+  color: white;
+  background-color: #050023;
 }
 </style>

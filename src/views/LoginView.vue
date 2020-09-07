@@ -185,6 +185,7 @@ p {
 .fa-envelope {
   color: #ffffff;
   width: max-content;
+  margin-right: 1rem;
 }
 .fa-times-circle {
   font-size: 1.2rem;
