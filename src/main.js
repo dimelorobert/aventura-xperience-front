@@ -33,7 +33,7 @@ import Swal from 'sweetalert2/src/sweetalert2.js'
 // If you don't need the styles, do not connect
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-Vue.use(VueSweetalert2,Swal);
+Vue.use(VueSweetalert2, Swal);
 
 
 // Axios
@@ -49,6 +49,7 @@ import dotenv from 'dotenv'
 dotenv.config();
 
 // Vue date fns
+import VueDateFns from "vue-date-fns";
 import {
   createDateFilter
 } from "vue-date-fns";
@@ -58,13 +59,17 @@ Vue.filter("date", createDateFilter("dd 'de' MMM 'de' yyyy HH:mm:ss", {
   locale
 }));
 
+Vue.use(VueDateFns);
+// Vue-paginate 
+import VuePaginate from 'vue-paginate'
+Vue.use(VuePaginate)
 
 
 // vuelidate validaciones formularios
 
 import Vuelidate from 'vuelidate'
 
-Vue.use(Vuelidate,vueHeadful, VueCountdown);
+Vue.use(Vuelidate, vueHeadful, VueCountdown, store);
 
 Vue.config.productionTip = false
 

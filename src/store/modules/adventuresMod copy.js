@@ -239,37 +239,6 @@ export default {
                     }]
                }
           ],
-          vacancies: [{
-                    value: 1,
-               },
-               {
-                    value: 2,
-               },
-               {
-                    value: 3,
-               },
-               {
-                    value: 4,
-               },
-               {
-                    value: 5,
-               },
-               {
-                    value: 6,
-               },
-               {
-                    value: 7,
-               },
-               {
-                    value: 8,
-               },
-               {
-                    value: 9,
-               },
-               {
-                    value: 10,
-               },
-          ],
           adventures: [],
           filters: {
                query: '',
@@ -280,7 +249,7 @@ export default {
                min_price: '',
                max_price: '',
                isAvailable: 'Disponible',
-               vacancy: ''
+               vacancy: '8'
           },
         
 
@@ -294,11 +263,7 @@ export default {
 
           setFilter(state, data) {
                state.filters[data['filters']] = data.value;
-               console.log('from setfilter', data.value);
           },
-          setQuery(state, query) {
-               state.filters.query = query;
-          }
 
      },
 
@@ -423,7 +388,7 @@ export default {
                }
 
                if (state.filters.category_id) {
-                    adventures = adventures.filter(adventure => adventure.category_id === Number(state.filters.category_id));
+                    adventures = adventures.filter(adventure => adventure.category_id === state.filters.category_id);
                }
 
                if (state.filters.from) {

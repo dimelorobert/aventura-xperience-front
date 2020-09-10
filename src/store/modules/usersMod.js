@@ -10,6 +10,7 @@ export default {
 
      // VARIABLE QUE SE ACTIVA EN TRUE PARA USAR MODULOS
      namespaced: true,
+     strict: true,
 
      // variables a usar
      state: {
@@ -112,7 +113,7 @@ export default {
                               /* Read more about handling dismissals below */
                               if (result.dismiss === Swal.DismissReason.timer) {
                                    router.push({
-                                        name: "Adventures"
+                                        name: "Login"
                                    });
                               }
                          })

@@ -50,19 +50,19 @@
     <div class="helper-links">
       <!-- CREAR CUENTA -->
       <router-link :to="{name: 'Registro'}">Crear cuenta 📒</router-link>
-
-      <!-- RECUPERAR PASSWORD -->
-      <!-- MODAL -->
-      <div id="app" class="modal-vue">
-        <!-- button show -->
-        <a @click="showModal = true">Olvidaste tu contraseña❓🤔</a>
-
-        <!-- overlay -->
-        <div class="overlay" v-if="showModal" @click="showModal = false"></div>
-
-        <!-- modal -->
-      </div>
     </div>
+    <!-- RECUPERAR PASSWORD -->
+    <!-- MODAL -->
+    <div class="modal-vue">
+      <!-- button show -->
+      <a @click="showModal = true">Olvidaste tu contraseña❓🤔</a>
+
+      <!-- overlay -->
+      <div class="overlay" v-if="showModal" @click="showModal = false"></div>
+
+      <!-- modal -->
+    </div>
+
     <div class="show-window">
       <!-- VENTANA SHOW -->
       <div class="modal" v-if="showModal">
@@ -78,6 +78,47 @@
             <i class="fas fa-envelope" />
             <input
               v-model="recoveryMail"
+              type="email"
+              name="email"
+              class="input-style"
+              placeholder="email-usuario@email.com"
+              autocomplete="on"
+            />
+          </div>
+          <div class="container-btn">
+            <button class="btn-dark">Enviar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- //////////////////////////////////////////// -->
+
+    <div class="modal-vue">
+      <!-- button show -->
+      <a @click="showModal = true">Nuevo codigo de activación</a>
+
+      <!-- overlay -->
+      <div class="overlay" v-if="showModal" @click="showModal = false"></div>
+
+      <!-- modal -->
+    </div>
+
+    <div class="show-window">
+      <!-- VENTANA SHOW -->
+      <div class="modal" v-if="showModal">
+        <p class="close" @click="showModal = false">
+          <i class="far fa-times-circle" />
+        </p>
+        <form @submit.prevent="sendNewCode" class="recovery-password">
+          <h3>
+            <i class="far fa-paper-plane" /> Introduce tu email
+          </h3>
+          <span class="recovery-text">para reenviarte un nuevo codigo de activación</span>
+          <div class="email-recovery-container">
+            <i class="fas fa-envelope" />
+            <input
+              v-model="newCode"
               type="email"
               name="email"
               class="input-style"
@@ -110,10 +151,11 @@ export default {
   data() {
     return {
       user: { email: null, password: null },
-      showLoading: false,
+ 
       showModal: false,
       message: null,
       recoveryMail: null,
+      newCode: null,
     };
   },
   computed: {
@@ -127,6 +169,27 @@ export default {
       try {
         const response = await this.axios.post(`users/recovery/password`, {
           email: this.recoveryMail,
+        });
+        if (response.status === 200) {
+          this.showModal = false;
+        }
+      } catch (error) {
+        let errorMessage;
+        //errorMessage = error.response.data.error;
+        //console.log("Error1:", errorMessage);
+        if (!errorMessage) {
+          //this.message = error.response.data.message;
+          // console.log("errro2:", error.response.data.message);
+        } else {
+          //this.message = errorMessage;
+          //console.log("error3", error.response);
+        }
+      }
+    },
+    async sendNewCode() {
+      try {
+        const response = await this.axios.post(`/users/send-new-code`, {
+          email: this.newCode,
         });
         if (response.status === 200) {
           this.showModal = false;

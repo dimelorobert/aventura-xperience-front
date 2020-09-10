@@ -18,20 +18,21 @@
       </nav>
     </div>
 
-    <vue-snotify></vue-snotify>
+    
     <router-view />
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-import Snotify from "vue-snotify";
+
 import Swal from 'sweetalert2/src/sweetalert2.js'
+import cart from '@/components/cart/Cart'
 
 
 
 export default {
   name: "App",
-  components: { Snotify },
+  components: {},
   methods: {
     ...mapActions("usersMod", ["logout", "readToken"]),
   },

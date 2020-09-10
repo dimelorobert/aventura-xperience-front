@@ -38,7 +38,7 @@
 
       <div class="container-btn">
         <button class="btn-light">Reservar</button>
-        <button class="btn-dark">Comprar</button>
+        <button class="btn-dark" @click="$emit('addToCart', adventure)">Comprar</button>
       </div>
     </article>
   </div>
@@ -53,6 +53,7 @@ export default {
   props: {
     adventure: Object,
     index: Number,
+    required: true,
   },
   data() {
     return {
