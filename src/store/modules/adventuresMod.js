@@ -2,6 +2,20 @@ import router from '@/router'
 import axios from 'axios'
 import Swal from 'sweetalert2/src/sweetalert2.js'
 
+const filtersRST = () => {
+     return {
+
+          query: '',
+          category_id: '',
+          city: '',
+          from: '',
+          to: '',
+          min_price: '',
+          max_price: '',
+          isAvailable: "Disponible",
+          vacancy: '',
+     }
+}
 
 export default {
 
@@ -271,19 +285,7 @@ export default {
                },
           ],
           adventures: [],
-          filters: {
-               query: '',
-               category_id: '',
-               city: '',
-               from: '',
-               to: '',
-               min_price: '',
-               max_price: '',
-               isAvailable: 'Disponible',
-               vacancy: ''
-          },
-        
-
+          filters: filtersRST(),
      },
 
      mutations: {
@@ -296,8 +298,8 @@ export default {
                state.filters[data['filters']] = data.value;
                console.log('from setfilter', data.value);
           },
-          setQuery(state, query) {
-               state.filters.query = query;
+          resetFilter(state) {
+               state.filters = filtersRST();
           }
 
      },
@@ -309,14 +311,14 @@ export default {
                payload
           ) => {
                let token = localStorage.getItem("token");
-               let id_user =  localStorage.getItem("user_id");
+               let id_user = localStorage.getItem("user_id");
                let config = {
                     headers: {
                          authorization: token, //localStorage.getItem('token'),
                     }
                }
 
-               const formData =  new FormData();
+               const formData = new FormData();
                formData.append("category_id", payload.category_id);
                formData.append("name", payload.name);
                formData.append("description", payload.description);
@@ -327,7 +329,7 @@ export default {
                formData.append("isAvailable", payload.isAvailable);
                formData.append("price", payload.price);
                formData.append("image", payload.image);
-               
+
 
                try {
                     let response = await axios.post(`/adventures/create`, formData, config);
@@ -415,7 +417,7 @@ export default {
                adventures = adventures.filter(adventure => adventure.isAvailable === state.filters.isAvailable);
 
                if (state.filters.query.length >= 1) {
-                    adventures = adventures.filter(adventure => adventure.name.includes(state.filters.query));
+                    adventures = adventures.filter(adventure => adventure.name.includes(state.filters.query.toLowerCase()) || adventure.name == state.filters.query.toLowerCase());
                }
 
                if (state.filters.city) {
@@ -443,7 +445,7 @@ export default {
                }
 
                if (state.filters.vacancy) {
-                    adventures = adventures.filter(adventure => adventure.vacancy === state.filters.vacancy);
+                    adventures = adventures.filter(adventure => adventure.vacancy >= state.filters.vacancy);
                }
 
                return adventures;

@@ -6,10 +6,10 @@
       <searchlist/>
     </div>
     
-
     <paginate name="adventures" :list="adventures" :per="perPage">
       <div class="adventure-for-container">
-        <adventure
+        <adventure 
+        class="animate__animated animate__pulse"
         v-for="adventure in paginated('adventures')"
         :key="adventure.id"
         :adventure="adventure"
@@ -31,7 +31,7 @@
   </div> 
 
   <div v-else>
-    <p>No hay productos para mostrar</p>
+    <p>No hay aventuras para mostrar</p>
   </div>
 </template>
 .
@@ -83,4 +83,5 @@ export default {
   justify-content: space-around;
   flex-wrap: wrap;
 }
+
 </style>
