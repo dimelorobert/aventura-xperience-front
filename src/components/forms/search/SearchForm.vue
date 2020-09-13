@@ -21,7 +21,7 @@
           class="query"
           autocomplete="off"
         />
-        <input class="query" type="button" value="Buscar aventura" />
+        <!-- <input class="query" type="button" value="Buscar aventura" /> -->
       </div>
 
       <!-- CIUDAD -->
@@ -44,8 +44,9 @@
           name="min"
           id="min"
           min="0"
-          step="0.01"
+          step="1"
           autocomplete="0ff"
+          value="0"
         />
 
         <label for>Precio hasta:</label>
@@ -55,7 +56,8 @@
           name="max"
           id="max"
           max="500"
-          step="0.01"
+          step="1"
+          min="0"
           autocomplete="off"
         />
       </div>
@@ -123,7 +125,6 @@
         </div>
       </div>
     </div>
-
   </form>
 </template>
 
@@ -338,8 +339,9 @@ export default {
 .by-city,
 .by-price,
 .by-category,
-.by-vacancy, 
-.nothing-0, .date,
+.by-vacancy,
+.nothing-0,
+.date,
 .container-reset-button {
   display: flex;
   justify-content: center;
@@ -349,7 +351,9 @@ export default {
 .by-availability label,
 .by-city label,
 .by-price label,
-.by-category label, .by-vacancy label, .date label {
+.by-category label,
+.by-vacancy label,
+.date label {
   color: #ffffff;
 }
 .searcher-input .query {

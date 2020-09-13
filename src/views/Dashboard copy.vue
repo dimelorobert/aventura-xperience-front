@@ -6,6 +6,7 @@
     />
     <userdetails />
     <useredit />
+    <adventurecreate></adventurecreate>
 
   </div>
 </template>
@@ -15,11 +16,12 @@ import { mapState, mapActions } from "vuex";
 
 import userdetails from "@/components/users/UserDetails";
 import useredit from "@/components/users/UserEdit";
+import adventurecreate from '@/components/adventures/AdventureCreate.vue'
 
 
 export default {
   name: "Dashboard",
-  components: { userdetails, useredit },
+  components: { userdetails, useredit,adventurecreate },
 };
 </script>
 

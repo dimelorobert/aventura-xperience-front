@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+require('./plugins')
 
 // Vue countDown
 import VueCountdown from '@chenfengyuan/vue-countdown';
@@ -41,8 +42,8 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios);
 
-
-axios.defaults.baseURL = `http://localhost:3000`
+const baseURL = `http://localhost:3000`;
+axios.defaults.baseURL = baseURL;
 
 // Dotenv
 import dotenv from 'dotenv'
@@ -65,11 +66,8 @@ import VuePaginate from 'vue-paginate'
 Vue.use(VuePaginate)
 
 
-// vuelidate validaciones formularios
 
-import Vuelidate from 'vuelidate'
-
-Vue.use(Vuelidate, vueHeadful, VueCountdown, store);
+Vue.use(vueHeadful, VueCountdown, store);
 
 Vue.config.productionTip = false
 

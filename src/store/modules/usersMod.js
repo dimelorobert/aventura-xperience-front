@@ -14,33 +14,59 @@ export default {
 
      // variables a usar
      state: {
-          user_id: null,
-          users: null,
-          userLogin: null,
-          token: null,
-
-          userByLogin: null,
-          userList: null,
-          userEdit: null,
-          communities: null,
+          selectedUser: null,
+          error: false,
+          errorMessage: '',
+          user_id: {},
+          users: [],
+          userLogin: {},
+          token: '',
+          passwordChange: {
+               oldPassword: '',
+               newPassword: '',
+               newPasswordRepeat: ''
+          },
+          tokenPayload: {},
+          userList: '',
+          userEdit: '',
+          communities: [],
           activateCodeQuery: null,
 
      },
      mutations: {
           // REGISTRO obtiene data enviada por el usuario
-          setUsers(state, payload) {
-               state.users = payload;
+          // setUsers(state, payload) {
+          //      state.users = payload;
+          // },
+          setUsers(state, users) {
+               state.users = users;
+          },
+          setUser(state, user) {
+               state.selectedUser = user;
+          },
+          updateUserStatus(state, payload) {
+               // u = user
+               const user = state.users.find(u => u.id === payload.id);
+               if (user) {
+                    user.isAdmin = !user.isUser
+               }
+          },
+          usersError(state, payload) {
+               state.error = true;
+               state.errorMessage = payload
+               state.users = []
           },
 
           // COMPROBADOR DE USER TOKEN LOGIN USER
           checkUserToken(state, payload) {
                state.token = payload;
 
-               if (payload === null) {
-                    state.userLogin = null;
+               if (payload === '') {
+                    state.userLogin = '';
                } else {
                     state.userLogin = decode(payload);
-                    console.log('FROM CHECK USER', state.userLogin);
+                    state.tokenPayload = state.userLogin.tokenPayload;
+                    console.log('FROM CHECK USER', state.tokenPayload);
                }
           },
           saveUserId(state, payload) {
@@ -49,8 +75,8 @@ export default {
 
           // RELLENADOR DE ARRAYS
           saveUserDataLogin(state, payload) {
-               state.userByLogin = payload;
-               console.log("from refill dta user login", state.userByLogin);
+               state.userLogin = payload;
+               console.log("from refill dta user login", state.userLogin);
                //state.communities = payload;
           },
           saveCommunities(state, payload) {
@@ -61,11 +87,33 @@ export default {
      },
 
      actions: {
+          /*async getUsers({
+               commit
+          }) {
+               let token = localStorage.getItem("token");
+               let config = {
+                    headers: {
+                         authorization: token, //localStorage.getItem('token'),
+                    }
+               };
+               try {
+                    const {
+                         data
+                    } = await axios.get(`/users/list`, config);
+                    commit('setUsers', data)
+               } catch (e) {
+                    commit('usersError', e.message );
+               } finally {
+                    console.log('La petición GET users ha finalizado');
+               }
+          },*/
+
 
 
           // PETICIÓN POST para crear cuenta usuario
           createUser: async ({
-                    commit
+                    commit,
+                    dispatch
                },
                payload
           ) => {
@@ -110,18 +158,15 @@ export default {
                                    clearInterval(timerInterval)
                               }
                          }).then((result) => {
-                              /* Read more about handling dismissals below */
+                              //Read more about handling dismissals below 
                               if (result.dismiss === Swal.DismissReason.timer) {
                                    router.push({
                                         name: "Login"
                                    });
-                              }
-                         })
-
-                         router.push({
-                              name: 'Login'
+                                   dispatch('getUsers');
+                              };
                          });
-                    }
+                    };
                } catch (error) {
                     Swal.fire({
                          title: `Error : ${error.response.data.status}`,
@@ -190,6 +235,60 @@ export default {
                }
 
           },
+
+          // EDesactivar cuenta usuario cuenta
+          deactivateAccount: async ({
+               commit,
+               dispatch
+          }) => {
+               try {
+                    let token = localStorage.getItem("token");
+                    let user_id = localStorage.getItem("user_id");
+                    let config = {
+                         headers: {
+                              authorization: token,
+                         }
+                    }
+                    const response = await axios.get(`/users/${user_id}/deactivate`, config);
+                    if (response.status === 200) {
+                         Swal.fire({
+                              title: 'Estas seguro?',
+                              text: "con esta acción tu cuenta se desactivará, podras volver a activarla pidiendo un nuevo codigo de activación en la sección de Login",
+                              icon: 'warning',
+                              showCancelButton: true,
+                              confirmButtonColor: '#3085d6',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'Si, desactivar cuenta!'
+                         }).then((result) => {
+                              if (result.isConfirmed) {
+                                   Swal.fire(
+                                        'Desactivada!',
+                                        'Tu cuenta ha sido desactivada con éxito',
+                                        'success'
+                                   )
+                                   router.push({
+                                        name: "Home"
+                                   });
+                                   localStorage.removeItem('token');
+                                   localStorage.removeItem('user_id');
+                                   dispatch('logout')
+                              }
+                         })
+
+
+
+                    }
+               } catch (error) {
+                    console.log(error);
+                    Swal.fire({
+                         title: `Error : ${error.response.data.status}`,
+                         text: `${error.response.data.message}`,
+                         icon: 'error',
+                         confirmButtonText: 'Ok'
+                    })
+               }
+
+          },
           // CITIES 
           async getCities({
                commit
@@ -230,6 +329,8 @@ export default {
 
                     commit('checkUserToken', loginData.token);
                     commit('saveUserId', loginData.tokenPayload.id);
+                    commit('saveUserDataLogin', loginData.tokenPayload);
+
 
 
                     if (response.status === 200) {
@@ -275,9 +376,11 @@ export default {
                     })
                }
           },
+
           // PETICIÓN PUT para editar cuenta usuario
           editUser: async ({
-                    commit
+                    commit,
+                    dispatch
                },
                payload
           ) => {
@@ -328,13 +431,13 @@ export default {
                          }).then((result) => {
                               /* Read more about handling dismissals below */
                               if (result.dismiss === Swal.DismissReason.timer) {
-                                   location.reload();
+                                   dispatch('getUser');
                               }
                          })
                     }
 
 
-                    
+
                } catch (error) {
                     Swal.fire({
                          title: `Error : ${error.response.status}`,
@@ -345,6 +448,70 @@ export default {
                }
           },
 
+          changePassword: async ({
+                    commit,
+                    dispatch
+               },
+               payload
+          ) => {
+               let token = localStorage.getItem("token");
+               let user_id = localStorage.getItem("user_id");
+               let config = {
+                    headers: {
+                         authorization: token, //localStorage.getItem('token'),
+                    }
+               }
+               try {
+                    const response = await axios.put(`users/${user_id}/password`, payload, config);
+
+                    console.log('FROM CHANGE PASSWORD', response);
+                    if (response.status === 200) {
+                         let timerInterval
+                         Swal.fire({
+                              title: 'Los datos se han actualizado con éxito',
+                              icon: 'success',
+                              html: `${response.data.message}`,
+                              timer: 2000,
+                              confirmButtonText: 'Ok',
+                              timerProgressBar: true,
+                              onBeforeOpen: () => {
+                                   Swal.showLoading()
+                                   timerInterval = setInterval(() => {
+                                        const content = Swal.getContent()
+                                        if (content) {
+                                             const b = content.querySelector('b')
+                                             if (b) {
+                                                  b.textContent = Swal.getTimerLeft()
+                                             }
+                                        }
+                                   }, 100)
+                              },
+                              onClose: () => {
+                                   clearInterval(timerInterval)
+                              }
+                         }).then((result) => {
+                              /* Read more about handling dismissals below */
+                              if (result.dismiss === Swal.DismissReason.timer) {
+
+                                   router.push({
+                                        name: "Home"
+                                   });
+                                   localStorage.removeItem('token');
+                                   localStorage.removeItem('user_id');
+                                   dispatch('logout')
+                              }
+                         })
+                    }
+
+               } catch (error) {
+                    Swal.fire({
+                         title: `Error : ${error.response.status}`,
+                         text: `${error.response.data.message}`,
+                         icon: 'error',
+                         confirmButtonText: 'Ok'
+                    })
+               }
+          },
 
           // LOGOUT
           logout({
@@ -367,7 +534,7 @@ export default {
                if (token) {
                     commit('checkUserToken', token);
                } else {
-                    commit('checkUserToken', null);
+                    commit('checkUserToken', '');
                }
           }
      },
@@ -379,6 +546,13 @@ export default {
                } else {
                     return true;
                }
+          },
+          isAdmin(state) {
+               return state.users.filter(user => !user.role === 'user')
+          },
+          isUser(state) {
+               return state.users.filter(user => user.role === 'user')
           }
+
      },
 }

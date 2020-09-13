@@ -139,19 +139,18 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import Snotify from "vue-snotify";
+import Swal from "sweetalert2/src/sweetalert2.js";
 import { IntersectingCirclesSpinner } from "epic-spinners";
 
 export default {
   name: "Login",
   components: {
-    Snotify,
     IntersectingCirclesSpinner,
   },
   data() {
     return {
       user: { email: null, password: null },
- 
+
       showModal: false,
       message: null,
       recoveryMail: null,
@@ -171,19 +170,44 @@ export default {
           email: this.recoveryMail,
         });
         if (response.status === 200) {
-          this.showModal = false;
+          let timerInterval;
+          Swal.fire({
+            title: "Su cuenta ha sido borrada con éxito",
+            html: `${response.data.message}`,
+            timer: 2000,
+            timerProgressBar: true,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+              timerInterval = setInterval(() => {
+                const content = Swal.getContent();
+                if (content) {
+                  const b = content.querySelector("b");
+                  if (b) {
+                    b.textContent = Swal.getTimerLeft();
+                  }
+                }
+              }, 100);
+            },
+            onClose: () => {
+              clearInterval(timerInterval);
+            },
+          }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+              dispatch("logout");
+              router.push({
+                name: "Home",
+              });
+            }
+          });
         }
       } catch (error) {
-        let errorMessage;
-        //errorMessage = error.response.data.error;
-        //console.log("Error1:", errorMessage);
-        if (!errorMessage) {
-          //this.message = error.response.data.message;
-          // console.log("errro2:", error.response.data.message);
-        } else {
-          //this.message = errorMessage;
-          //console.log("error3", error.response);
-        }
+        Swal.fire({
+          title: `Error : ${error.response.data.status}`,
+          text: `${error.response.data.message}`,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       }
     },
     async sendNewCode() {

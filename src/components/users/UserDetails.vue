@@ -1,44 +1,43 @@
 <template>
-  <div class="edit-user-container">
-    <figure class="container-image">
-      <img :src="user_image + '/' + userByLogin.image" alt />
-    </figure>
-    <p>{{userByLogin.name}} {{userByLogin.surname}}</p>
-    <p>Role: {{userByLogin.role}}</p>
-    <details>
-      <summary>Información del usuario</summary>
+  <div class="info-user">
+    <div class="container-data-user">
       <p v-if="null || undefined">Nombre: Sin especifica</p>
-      <!-- <p v-else>Nombre: {{userByLogin.name}}</p> -->
+      <p v-else>Nombre: {{userLogin.name}}</p>
       <p v-if="null || undefined">Apellido: Sin especificar</p>
-      <p v-else>Apellidos: {{userByLogin.surname}}</p>
+      <p v-else>Apellidos: {{userLogin.surname}}</p>
       <p v-if="null || undefined">Fecha de nacimiento: Sin especificar</p>
-      <p v-else>Fecha de nacimiento: {{userByLogin.date_birth}}</p>
+      <p v-else>Fecha de nacimiento: {{$date(new Date(userLogin.date_birth), 'dd MMMM yyyy') }}</p>
       <p v-if="null || undefined">Ciudad - País: Sin especificar</p>
-      <p v-else>Ciudad - País: {{userByLogin.city}} - {{userByLogin.country}}</p>
+      <p v-else>Ciudad - País: {{userLogin.city}} - {{userLogin.country}}</p>
       <p v-if="null || undefined">Email: Sin especificar</p>
-      <p v-else>Email: {{userByLogin.email}}</p>
-      <p>Fecha de creación de la cuenta: {{userByLogin.creation_date}}</p>
-      <p>Última actualización de los datos de usuario: {{userByLogin.modify_date}}</p>
-    </details>
+      <p v-else>Email: {{userLogin.email}}</p>
+      <p>Fecha de creación de la cuenta: {{$date(new Date(userLogin.creation_date), 'dd MMMM yyyy HH:mm:ss')}}</p>
+      <p>Última actualización de los datos de usuario: {{$date(new Date(userLogin.modify_date), 'dd MMMM yyyy HH:mm:ss')}}</p>
+    </div>
+
+    <div class="container-btn">
+      <button @click.prevent="deactivateAccount" class="btn-dark">Eliminar cuenta</button>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-
+import { createDateFilter } from "vue-date-fns";
+import locale from "date-fns/locale/es";
+import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
 export default {
   name: "UserDetails",
-  data() {
-    return {
-      user_image: process.env.VUE_APP_URL_API,
-    };
-  },
   computed: {
-    ...mapState("usersMod", ["userByLogin"]),
+    ...mapState("usersMod", ["userLogin"]),
+    now() {
+      return this.$date(new Date());
+    },
+  },
+  filters: {
+    date: createDateFilter("dd MMMM yyyy", { locale }),
   },
   methods: {
-    ...mapActions("usersMod", ["getUser"])
-  
+    ...mapActions("usersMod", ["getUser", "deactivateAccount"]),
   },
   created() {
     this.getUser();
@@ -53,6 +52,10 @@ export default {
   margin: 0;
   padding: 0;
   overflow: hidden;
+}
+.container-data-user p {
+  margin: 1rem 0;
+  padding: 0.5rem 1.5rem;
 }
 .container-image img {
   border-radius: 50%;
@@ -94,10 +97,10 @@ export default {
   color: #ffffff;
   background-color: #fe285a;
   margin: 1rem auto;
-  padding: 0 1.5rem;
+  padding: 0.5rem 1.5rem;
 }
 .btn-dark:hover {
-  color: #000000;
+  color: #ffffff;
   background-color: #050023;
 }
 

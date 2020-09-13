@@ -30,25 +30,30 @@ export default {
                }
           },
           removeAdventureFromCart(state, adventure) {
-               state.cart = filter(state.cart, (
-                    _adventure
-               ) => _adventure.id !== adventure.id);
+               /*state.cart = filter(state.cart, (
+                     _adventure
+               ) => _adventure.id !== adventure.id);*/
+               if (removeAdventuresInCart) {
+                    state.cart = filter(state.cart, ({
+                         id
+                    }) => id !== cart.id);
+               }
 
-               // state.cart = filter(state.cart, ({
-               //      id
-               // }) => id !== adventure.id);
+
           },
 
      },
 
      actions: {
 
+
      },
      getters: {
+
           totalCost(state) {
                return state.cart.reduce((sum, adventure) => {
                     return (parseFloat(adventure.price) * adventure.quantity) + sum
-               }, 0);
+               }, 0).toFixed(2);
           }
      },
 }

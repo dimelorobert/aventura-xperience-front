@@ -38,7 +38,7 @@
 
       <div class="container-btn">
         <button class="btn-light">Reservar</button>
-        <button class="btn-dark" @click="$emit('addToCart', adventure)">Comprar</button>
+        <button class="btn-dark" @click="$emit('addToCart', adventure)">Añadir carrito</button>
       </div>
     </article>
   </div>
@@ -46,7 +46,7 @@
 
 <script>
 import { dateFilter } from "vue-date-fns";
-//import locale from "date-fns/locale/es";
+import locale from "date-fns/locale/es";
 
 export default {
   name: "Adventure",
@@ -144,19 +144,21 @@ hr {
 .btn-light {
   color: #000000;
   background-color: transparent;
+  padding: 0.5rem 1.5rem;
 }
 
 .btn-light:hover {
   color: #ffffff;
-  background-color: #fe285a;
+  background-color: #050023;
 }
 .btn-dark {
   color: #ffffff;
   background-color: #fe285a;
+  padding: 0.5rem 1.5rem;
 }
 .btn-dark:hover {
-  color: #000000;
-  background-color: transparent;
+  color: #FFFFFF;
+  background-color: #050023;
 }
 
 /*estilos disponible*/

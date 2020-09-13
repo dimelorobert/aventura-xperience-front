@@ -6,16 +6,17 @@
     />
 
     <h1>This is an about page</h1>
-    <adventurecreate />
+
   </div>
 </template>
 <script>
 import adventurecreate from "@/components/adventures/AdventureCreate";
 import { mapState, mapActions } from "vuex";
+import cart from '@/components/cart/Cart.vue'
 
 export default {
   components: {
-    adventurecreate,
+    adventurecreate,cart
   },
   computed: {
     ...mapState("usersMod", ["communities"]),

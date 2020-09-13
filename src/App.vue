@@ -14,21 +14,22 @@
         <router-link v-if="!isActive" :to="{name:'Registro'}">Registro</router-link>
         <router-link v-if="!isActive" :to="{name:'Login'}">Login</router-link>
         <router-link v-if="isActive" :to="{name: 'Dashboard'}">Perfil</router-link>
+        <div class="cart">
+          <img id="cart" src="../public/media/cart.svg" width="60px" alt />
+        </div>
+        
         <a @click="logout()" v-if="isActive">Logout</a>
       </nav>
     </div>
 
-    
     <router-view />
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import Swal from 'sweetalert2/src/sweetalert2.js'
-import cart from '@/components/cart/Cart'
-
-
+import Swal from "sweetalert2/src/sweetalert2.js";
+import cart from "@/components/cart/Cart";
 
 export default {
   name: "App",
@@ -46,7 +47,6 @@ export default {
 </script>
 
 <style>
-
 @import "~vue-snotify/styles/material.css";
 * {
   margin: 0;
@@ -68,6 +68,14 @@ export default {
 .container-logo img {
   max-width: 100%;
   width: 25rem;
+}
+#cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  bottom: 30px;
+  cursor: pointer;
 }
 
 #nav {
@@ -96,19 +104,14 @@ export default {
   align-items: center;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
- input {
+
+input {
   border: none;
   color: #ffffff;
   outline: none;
   background: #fe285a;
   width: 100%;
-} 
+}
 button {
   outline: none;
   border: 1px solid #fe285a;

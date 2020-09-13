@@ -26,6 +26,9 @@ export default {
 
      // variables a usar
      state: {
+          selectedAdventure: null,
+          error: null, 
+          errorMessage: null,
           communities: [{
                     "id": "01",
 
@@ -411,13 +414,14 @@ export default {
 
      },
      getters: {
+          
           filteredAdventures(state) {
                let adventures = state.adventures;
 
                adventures = adventures.filter(adventure => adventure.isAvailable === state.filters.isAvailable);
 
-               if (state.filters.query.length >= 1) {
-                    adventures = adventures.filter(adventure => adventure.name.includes(state.filters.query.toLowerCase()) || adventure.name == state.filters.query.toLowerCase());
+               if (state.filters.query.length >= 0 || state.filters.query.length === adventure.name) {
+                    adventures = adventures.filter(adventure => adventure.name.includes(state.filters.query.toLowerCase()) );
                }
 
                if (state.filters.city) {
