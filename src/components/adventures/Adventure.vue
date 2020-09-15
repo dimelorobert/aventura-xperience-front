@@ -38,7 +38,10 @@
 
       <div class="container-btn">
         <button class="btn-light">Reservar</button>
-        <button class="btn-dark" @click="$emit('addToCart', adventure)">Añadir carrito</button>
+        <router-link :to="{name:'Adventures', params: adventure.id}">
+          <button @click="$emit('addToCart', adventure)"  class="btn-dark">Añadir carrito</button>
+          <!-- @click="$emit('addToCart', adventure)" -->
+        </router-link>
       </div>
     </article>
   </div>
@@ -47,6 +50,7 @@
 <script>
 import { dateFilter } from "vue-date-fns";
 import locale from "date-fns/locale/es";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "Adventure",
@@ -60,7 +64,12 @@ export default {
       staticFolder: process.env.VUE_APP_STATIC,
     };
   },
-  methods: {},
+  computed: {
+    ...mapState("adventuresMod", ["adventures"])
+  },
+  methods: {
+    ...mapActions("adventuresMod", ["getAdventures"]),
+  },
 };
 </script>
 
@@ -70,6 +79,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: .5rem 1rem;
 }
 
 .card {
@@ -157,7 +167,7 @@ hr {
   padding: 0.5rem 1.5rem;
 }
 .btn-dark:hover {
-  color: #FFFFFF;
+  color: #ffffff;
   background-color: #050023;
 }
 

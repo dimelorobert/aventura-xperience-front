@@ -6,35 +6,29 @@
       <p v-if="null || undefined">Apellido: Sin especificar</p>
       <p v-else>Apellidos: {{userLogin.surname}}</p>
       <p v-if="null || undefined">Fecha de nacimiento: Sin especificar</p>
-      <p v-else>Fecha de nacimiento: {{$date(new Date(userLogin.date_birth), 'dd MMMM yyyy') }}</p>
+      <p v-else>Fecha de nacimiento: {{new Date(userLogin.date_birth) | date("dd") }}</p>
       <p v-if="null || undefined">Ciudad - País: Sin especificar</p>
       <p v-else>Ciudad - País: {{userLogin.city}} - {{userLogin.country}}</p>
       <p v-if="null || undefined">Email: Sin especificar</p>
       <p v-else>Email: {{userLogin.email}}</p>
-      <p>Fecha de creación de la cuenta: {{$date(new Date(userLogin.creation_date), 'dd MMMM yyyy HH:mm:ss')}}</p>
-      <p>Última actualización de los datos de usuario: {{$date(new Date(userLogin.modify_date), 'dd MMMM yyyy HH:mm:ss')}}</p>
+      <p>Fecha de creación de la cuenta: {{new Date(userLogin.date_birth) | date("dd") }}</p>
+      <p>Última actualización de los datos de usuario:{{new Date(userLogin.date_birth) | date("dd") }}</p>
     </div>
 
     <div class="container-btn">
-      <button @click.prevent="deactivateAccount" class="btn-dark">Eliminar cuenta</button>
+      <button @click.prevent="deactivateAccount" class="btn-dark">Desactivar cuenta</button>
     </div>
   </div>
 </template>
 
 <script>
-import { createDateFilter } from "vue-date-fns";
+import { dateFilter } from "vue-date-fns";
 import locale from "date-fns/locale/es";
 import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
 export default {
   name: "UserDetails",
   computed: {
     ...mapState("usersMod", ["userLogin"]),
-    now() {
-      return this.$date(new Date());
-    },
-  },
-  filters: {
-    date: createDateFilter("dd MMMM yyyy", { locale }),
   },
   methods: {
     ...mapActions("usersMod", ["getUser", "deactivateAccount"]),

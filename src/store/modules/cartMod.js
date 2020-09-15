@@ -33,11 +33,11 @@ export default {
                /*state.cart = filter(state.cart, (
                      _adventure
                ) => _adventure.id !== adventure.id);*/
-               if (removeAdventuresInCart) {
+               
                     state.cart = filter(state.cart, ({
                          id
                     }) => id !== cart.id);
-               }
+              
 
 
           },

@@ -9,9 +9,9 @@
       <div class="dashboard-nav-user">
         <nav class="nav-user">
           <figure class="container-user-image">
-            <img :src="apiHost + '/' + userLogin.image" alt="Imagen del usuario" />
-            <h3>{{userLogin.name}} {{userLogin.surname}}</h3>
-            <p class="p-img">{{userLogin.role}}</p>
+            <img :src="apiHost + '/' + userById.image" alt="Imagen del usuario" />
+            <h3>{{userById.name}} {{userById.surname}}</h3>
+            <p class="p-img">{{userById.role}}</p>
           </figure>
           <ul>
             <li @click="activetab=1" v-bind:class="[ activetab === 1 ? 'active' : '' ]">
@@ -24,7 +24,7 @@
               <a href="#">Cambiar password</a>
             </li>
             <li @click="activetab=4" v-bind:class="[ activetab === 4 ? 'active' : '' ]">
-              <a href="#">Aventuras</a>
+              <a href="#">Aventuras Labs</a>
             </li>
             <li @click="activetab=5" v-bind:class="[ activetab === 5 ? 'active' : '' ]">
               <a href="#">Aventuras reservadas</a>
@@ -33,9 +33,12 @@
               <a href="#">Aventuras compradas</a>
             </li>
             <li @click="activetab=7" v-bind:class="[ activetab === 7 ? 'active' : '' ]">
-              <a href="#">Panel carrito</a>
+              <a href="#">Reseñas</a>
             </li>
             <li @click="activetab=8" v-bind:class="[ activetab === 8 ? 'active' : '' ]">
+              <a href="#">Panel carrito</a>
+            </li>
+            <li @click="activetab=9" v-bind:class="[ activetab === 9 ? 'active' : '' ]">
               <a href="#">Panel usuario</a>
             </li>
           </ul>
@@ -45,13 +48,13 @@
         <div class="title-tabcontent">
           <h2>Información del usuario</h2>
         </div>
-        <userdetails></userdetails>
+        <!-- <userdetails></userdetails> -->
       </div>
       <div v-show="activetab === 2" class="dashboard-wrapper-data-user active">
         <div class="title-tabcontent">
           <h2>Editar datos del usuario</h2>
         </div>
-        <useredit></useredit>
+        <!-- <useredit></useredit> -->
       </div>
       <div v-show="activetab === 3" class="dashboard-wrapper-data-user active">
         <div class="title-tabcontent">
@@ -61,8 +64,9 @@
       </div>
       <div v-show="activetab === 4" class="dashboard-wrapper-data-user">
         <div class="title-tabcontent">
-          <h2>Aventuras</h2>
+          <h2>Aventuras labs xperience</h2>
         </div>
+        <adventurelistdashboard></adventurelistdashboard>
       </div>
       <div v-show="activetab === 5" class="dashboard-wrapper-data-user active">
         <div class="title-tabcontent">
@@ -76,10 +80,15 @@
       </div>
       <div v-show="activetab === 7" class="dashboard-wrapper-data-user active">
         <div class="title-tabcontent">
-          <h2>Panel carrito</h2>
+          <h2>Reseñas</h2>
         </div>
       </div>
       <div v-show="activetab === 8" class="dashboard-wrapper-data-user active">
+        <div class="title-tabcontent">
+          <h2>Panel carrito</h2>
+        </div>
+      </div>
+      <div v-show="activetab === 9" class="dashboard-wrapper-data-user active">
         <div class="title-tabcontent">
           <h2>Panel usuario</h2>
         </div>
@@ -94,19 +103,30 @@ import { mapState, mapActions } from "vuex";
 import userdetails from "@/components/users/UserDetails";
 import useredit from "@/components/users/UserEdit";
 import adventurecreate from "@/components/adventures/AdventureCreate.vue";
-import changepassword from '@/components/users/ChangePassword.vue'
+import changepassword from "@/components/users/ChangePassword.vue";
+import adventurelistdashboard from "@/components/adventures/AdventureListDashboard.vue";
 
 export default {
   name: "Dashboard",
-  components: { userdetails, useredit, adventurecreate, changepassword },
+  components: {
+    userdetails,
+    useredit,
+    adventurecreate,
+    changepassword,
+    adventurelistdashboard,
+  },
   data() {
     return {
       apiHost: process.env.VUE_APP_URL_API,
       activetab: 1,
+      user_id: localStorage.getItem("user_id"),
     };
   },
+  created() {
+    this.getUser(this.user_id);
+  },
   computed: {
-    ...mapState("usersMod", ["userLogin", "userByLogin"]),
+    ...mapState("usersMod", ["userById"]),
   },
   methods: {
     ...mapActions("usersMod", ["getUser", "deactivateAccount"]),
@@ -137,7 +157,7 @@ export default {
   align-items: center;
   width: 100%;
   background-color: #ffffff;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
 }
 .container-user-image h3 {
   font-size: 1.6rem;

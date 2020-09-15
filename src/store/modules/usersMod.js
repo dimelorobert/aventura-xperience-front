@@ -14,12 +14,12 @@ export default {
 
      // variables a usar
      state: {
-          selectedUser: null,
+          selectedUser: '',
           error: false,
           errorMessage: '',
-          user_id: {},
           users: [],
           userLogin: {},
+          userById: {},
           token: '',
           passwordChange: {
                oldPassword: '',
@@ -27,10 +27,10 @@ export default {
                newPasswordRepeat: ''
           },
           tokenPayload: {},
-          userList: '',
-          userEdit: '',
+          userList: [],
+          userEdit: {},
           communities: [],
-          activateCodeQuery: null,
+          activateCodeQuery: '',
 
      },
      mutations: {
@@ -69,15 +69,12 @@ export default {
                     console.log('FROM CHECK USER', state.tokenPayload);
                }
           },
-          saveUserId(state, payload) {
-               state.user_id = payload;
-          },
 
           // RELLENADOR DE ARRAYS
-          saveUserDataLogin(state, payload) {
-               state.userLogin = payload;
-               console.log("from refill dta user login", state.userLogin);
-               //state.communities = payload;
+          setUserById(state, payload) {
+               state.userById = payload;
+               console.log("FROM GET USER MUTATIONS", state.userById);
+             
           },
           saveCommunities(state, payload) {
                state.communities = payload;
@@ -87,33 +84,10 @@ export default {
      },
 
      actions: {
-          /*async getUsers({
-               commit
-          }) {
-               let token = localStorage.getItem("token");
-               let config = {
-                    headers: {
-                         authorization: token, //localStorage.getItem('token'),
-                    }
-               };
-               try {
-                    const {
-                         data
-                    } = await axios.get(`/users/list`, config);
-                    commit('setUsers', data)
-               } catch (e) {
-                    commit('usersError', e.message );
-               } finally {
-                    console.log('La petición GET users ha finalizado');
-               }
-          },*/
-
-
 
           // PETICIÓN POST para crear cuenta usuario
           createUser: async ({
-                    commit,
-                    dispatch
+                    commit
                },
                payload
           ) => {
@@ -163,7 +137,6 @@ export default {
                                    router.push({
                                         name: "Login"
                                    });
-                                   dispatch('getUsers');
                               };
                          });
                     };
@@ -183,20 +156,16 @@ export default {
                commit
           }) => {
                try {
-                    let userList = [];
-
                     let token = localStorage.getItem("token");
                     let config = {
                          headers: {
                               authorization: token, //localStorage.getItem('token'),
                          }
                     }
-
                     const users = await axios.get('/users/list', config);
-                    userList = users.data.data;
-
-                    console.log("FROM GET USERS:", userList);
-                    commit('setUsers', userList)
+                    const userList = users.data.data;
+                    console.log("FROM GET USERS:",userList);
+                    commit('setUsers', userList);
                } catch (error) {
                     Swal.fire({
                          title: `Error : ${error.response.status}`,
@@ -205,16 +174,15 @@ export default {
                          confirmButtonText: 'Ok'
                     })
                }
-
           },
 
           // GET USER BY ID
           getUser: async ({
                commit
-          }) => {
+          }, user_id) => {
                try {
                     let token = localStorage.getItem("token");
-                    let user_id = localStorage.getItem("user_id");
+                    //let user_id = localStorage.getItem("user_id");
                     let config = {
                          headers: {
                               authorization: token,
@@ -222,8 +190,8 @@ export default {
                     }
                     const userListJSON = await axios.get(`/users/${user_id}`, config);
                     const userData = await userListJSON.data.data;
-                    console.log("FROM GET USERS:", userData);
-                    await commit('saveUserDataLogin', userData)
+                    console.log("FROM GET USER:", userData);
+                    await commit('setUserById', userData)
                } catch (error) {
                     console.log(error);
                     Swal.fire({
@@ -271,7 +239,7 @@ export default {
                                    });
                                    localStorage.removeItem('token');
                                    localStorage.removeItem('user_id');
-                                   dispatch('logout')
+                                   dispatch("logout");
                               }
                          })
 
@@ -328,10 +296,6 @@ export default {
                     localStorage.setItem('user_id', loginData.tokenPayload.id);
 
                     commit('checkUserToken', loginData.token);
-                    commit('saveUserId', loginData.tokenPayload.id);
-                    commit('saveUserDataLogin', loginData.tokenPayload);
-
-
 
                     if (response.status === 200) {
                          let timerInterval
@@ -379,8 +343,7 @@ export default {
 
           // PETICIÓN PUT para editar cuenta usuario
           editUser: async ({
-                    commit,
-                    dispatch
+                    commit
                },
                payload
           ) => {
@@ -449,8 +412,8 @@ export default {
           },
 
           changePassword: async ({
-                    commit,
-                    dispatch
+                    commit
+
                },
                payload
           ) => {
@@ -498,7 +461,7 @@ export default {
                                    });
                                    localStorage.removeItem('token');
                                    localStorage.removeItem('user_id');
-                                   dispatch('logout')
+
                               }
                          })
                     }
@@ -517,7 +480,7 @@ export default {
           logout({
                commit
           }) {
-               commit('checkUserToken', null);
+               commit('checkUserToken', '');
                localStorage.removeItem('token');
                localStorage.removeItem('user_id');
                router.push({
@@ -541,7 +504,7 @@ export default {
      getters: {
           isActive: state => !!state.token,
           userExist(state) {
-               if (state.userLogin === null) {
+               if (state.userLogin === '') {
                     return false;
                } else {
                     return true;

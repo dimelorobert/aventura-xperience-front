@@ -16,6 +16,23 @@ const routes = [{
     component: () => import( /* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
+    path: '/users/:id',
+    name: 'User',
+    component: () => import( /* webpackChunkName: "users/:id" */ '@/components/users/User'),
+    meta: {
+      requireAuth: true,
+    }
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    component: () => import( /* webpackChunkName: "users" */ '@/views/users/Users'),
+    meta: {
+      requireAuth: true,
+    }
+  },
+  
+  {
     path: '/adventures/list',
     name: 'AdventureList',
     component: () => import( /* webpackChunkName: "adventureslist" */ '@/components/adventures/AdventureList.vue'),
@@ -24,30 +41,17 @@ const routes = [{
     // }
   },
   {
-    path: '/adventures/',
+    path: '/adventures',
     name: 'Adventures',
     component: () => import( /* webpackChunkName: "adventures" */ '../views/adventures/Adventures.vue'),
-    // meta: {
-    //   requireAuth: true,
-    // }
-  }, {
-    path: '/adventures/:id',
-    name: 'Adventure',
-    component: () => import( /* webpackChunkName: "adventures" */ '../components/adventures/Adventure.vue'),
-    // meta: {
-    //   requireAuth: true,
-    // }
+    meta: {
+      requireAuth: false,
+    }
   },
   {
     path: '/create-account',
     name: 'Registro',
     component: () => import( /* webpackChunkName: "registro" */ '../views/Registro.vue'),
-
-  },
-  {
-    path: '/users/:id',
-    name: 'Users',
-    component: () => import( /* webpackChunkName: "users" */ '../views/users/Users.vue'),
 
   },
   {

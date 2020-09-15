@@ -4,9 +4,10 @@
       title="Crear Aventura || Aventura-Xperience"
       description="Tu aventura empieza aquí"
     />
-
-    <h1>Crea tu aventura</h1>
-    <br />
+    <h2>
+      <i class="fas fa-flask"></i> Aventura Labs
+    </h2>
+    <br>
     <form
       @submit.prevent="createAdventure({
         category_id: Number(createAd.category_id),
@@ -76,7 +77,7 @@
                 name="description"
                 id="description"
                 rows="4"
-                cols="35"
+                cols="30"
               />
             </label>
           </div>
@@ -177,7 +178,13 @@
           <div class="container-adventure-input">
             <label for="price">
               Precio :
-              <input v-model="createAd.price" type="number" id="price" name="price" step="0.01" />
+              <input
+                v-model="createAd.price"
+                type="number"
+                id="price"
+                name="price"
+                step="0.01"
+              />
             </label>
           </div>
         </div>
@@ -225,6 +232,7 @@ export default {
         price: null,
         image: null,
       },
+      showModal: false,
       vacancies: [
         {
           value: 1,

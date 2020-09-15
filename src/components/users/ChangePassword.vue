@@ -1,9 +1,13 @@
 <template>
   <div class="change-password-container">
-    <form @submit.prevent="changePassword(passwordChange)" class="animate__animated animate__fadeInLeft">
+    <form
+      id="form"
+      @submit.prevent="changePassword(passwordChange)"
+      class="animate__animated animate__fadeInLeft"
+    >
       <!-- OLD PASSWORD -->
       <div class="input-container">
-        <i class="fas fa-user" />
+        <i class="fas fa-lock-open"></i>
         <input
           v-model="passwordChange.oldPassword"
           type="password"
@@ -15,7 +19,7 @@
       </div>
       <!-- PASSWORD -->
       <div class="input-container">
-        <i class="fas fa-user" />
+        <i class="fas fa-lock" />
         <input
           v-model="passwordChange.newPassword"
           type="password"
@@ -34,7 +38,7 @@
           @keyup.enter="changePassword(passwordChange)"
           type="password"
           name="repeat-password"
-          placeholder="new password"
+          placeholder="repetir nueva password"
           required
           autocomplete="off"
         />
@@ -42,7 +46,7 @@
 
       <!-- BOTON -->
       <div class="container-btn">
-        <button class="btn-dark">Cambiar password</button>
+        <button class="btn-dark1">Cambiar password</button>
       </div>
     </form>
   </div>
@@ -60,10 +64,14 @@ export default {
   },
   data() {
     return {
-      passwordChange: { oldPassword: "", newPassword: "", newPasswordRepeat: "" },
+      passwordChange: {
+        oldPassword: "",
+        newPassword: "",
+        newPasswordRepeat: "",
+      },
     };
   },
- 
+
   methods: {
     ...mapActions("usersMod", ["changePassword"]),
   },
@@ -71,8 +79,10 @@ export default {
 </script>
 
 <style scoped>
-.login-container {
-  height: 100vh;
+#form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 ::placeholder {
   color: #ffffff;
@@ -102,7 +112,7 @@ p {
   height: 2.5rem;
   padding: 1.5rem;
 }
-.fa-user,
+.fa-lock-open,
 .fa-lock,
 .fa-envelope {
   color: #ffffff;
@@ -128,11 +138,12 @@ p {
   justify-content: center;
 }
 
-.btn-dark {
+.btn-dark1 {
   color: #ffffff;
-  background-color: #fe285a;
+  background-color: #050023;
+  padding: 0.5rem 1rem;
 }
-.btn-dark:hover {
+.btn-dark1:hover {
   color: #000000;
   background-color: transparent;
 }

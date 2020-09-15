@@ -8,8 +8,8 @@
           <th>Aventura</th>
           <th>Cantidad</th>
           <th>Precio</th>
-          <th>Reservar</th>
-          <th>Comprar</th>
+          <th>Acción</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -29,8 +29,10 @@
             <strong>Total</strong>
           </td>
           <td></td>
-          <td>{{totalCost}}€</td>
-          <td></td>
+          <td> {{totalCost}}</td>
+          <td>
+            boton
+          </td>
         </tr>
       </tfoot>
     </table>
@@ -50,6 +52,13 @@ export default {
   data() {
     return {
       fields: ["Nombre", "Cantidad", "Precio", "Acción"],
+      showButton: false,
+      purchase: {
+        adventure_id: "",
+        quantity: "",
+        total_price: "",
+        status: "",
+      },
     };
   },
   computed: {

@@ -51,22 +51,23 @@
       <!-- CREAR CUENTA -->
       <router-link :to="{name: 'Registro'}">Crear cuenta 📒</router-link>
     </div>
+
     <!-- RECUPERAR PASSWORD -->
     <!-- MODAL -->
     <div class="modal-vue">
       <!-- button show -->
-      <a @click="showModal = true">Olvidaste tu contraseña❓🤔</a>
+      <a @click="showModalPass = true">Olvidaste tu contraseña❓🤔</a>
 
       <!-- overlay -->
-      <div class="overlay" v-if="showModal" @click="showModal = false"></div>
+      <div class="overlay" v-if="showModalPass" @click="showModal = false"></div>
 
       <!-- modal -->
     </div>
 
     <div class="show-window">
       <!-- VENTANA SHOW -->
-      <div class="modal" v-if="showModal">
-        <p class="close" @click="showModal = false">
+      <div class="modal" v-if="showModalPass">
+        <p class="close" @click="showModalPass = false">
           <i class="far fa-times-circle" />
         </p>
         <form @submit.prevent="recoveryPassword" class="recovery-password">
@@ -112,7 +113,7 @@
         </p>
         <form @submit.prevent="sendNewCode" class="recovery-password">
           <h3>
-            <i class="far fa-paper-plane" /> Introduce tu email
+            <i class="fas fa-code"></i> Introduce tu email
           </h3>
           <span class="recovery-text">para reenviarte un nuevo codigo de activación</span>
           <div class="email-recovery-container">
@@ -152,6 +153,7 @@ export default {
       user: { email: null, password: null },
 
       showModal: false,
+      showModalPass: false,
       message: null,
       recoveryMail: null,
       newCode: null,
@@ -337,6 +339,9 @@ a {
   padding: 20px 30px;
   background-color: #fff;
 }
+.modal-vue, .helper-links {
+  margin: 0.5rem 0;
+}
 
 .recovery-text {
   font-size: 0.9rem;
@@ -347,14 +352,5 @@ a {
   top: 10px;
   right: 20px;
 }
-.error {
-  margin: 2rem auto;
-  color: #ffffff;
-  background-color: red;
-  opacity: 75%;
-  border-radius: 0.25rem;
-  width: 18.75rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-}
+
 </style>
